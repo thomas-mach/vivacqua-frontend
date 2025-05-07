@@ -2,7 +2,7 @@
   <div class="container">
     <CardForm>
       <template #title>
-        <p>Sign up</p>
+        <p>Registrati</p>
       </template>
       <template #message>
         <div class="message-placeholder">
@@ -17,116 +17,253 @@
       <template #form>
         <form novalidate @submit.prevent="handleSignup">
           <!-- INPUT NAME -->
-          <label for="name">Name</label>
-          <div class="input-wraper">
-            <input
-              type="text"
-              :class="{
-                'error-input': getError('name'),
-                'valid-input': !nameValidate(),
-              }"
-              v-model="name"
-              id="name"
-              placeholder="Name"
-            />
-            <font-awesome-icon class="icon" :icon="['fas', 'user']" />
+          <div class="input-wraper name">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('name'),
+                }"
+                v-model="name"
+                id="name"
+                placeholder="Nome"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'user']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError('name')">
+                {{ getError("name") }}
+              </p>
+            </div>
           </div>
-          <div class="error-message-placeholder">
-            <p class="error-message" v-if="getError('name') && nameValidate()">
-              {{ getError("name") }}
-            </p>
+          <!-- INPUT SURNAME -->
+          <div class="input-wraper surname">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('surname'),
+                }"
+                v-model="surname"
+                id="surname"
+                placeholder="Cognome"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'user']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError('surname')">
+                {{ getError("surname") }}
+              </p>
+            </div>
           </div>
 
           <!-- INPUT EMAIL -->
-          <label for="email">Email</label>
-          <div class="input-wraper">
-            <input
-              type="text"
-              :class="{
-                'error-input': getError('email'),
-                'valid-input': emailValidate(),
-              }"
-              v-model="email"
-              id="email"
-              placeholder="Email Adress"
-            />
-            <font-awesome-icon class="icon" :icon="['fas', 'envelope']" />
-          </div>
-          <div class="error-message-placeholder">
-            <p
-              class="error-message"
-              v-if="getError('email') && !emailValidate()"
-            >
-              {{ getError("email") }}
-            </p>
+          <div class="input-wraper email">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('email'),
+                  'valid-input': emailValidate(),
+                }"
+                v-model="email"
+                id="email"
+                placeholder="Email"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'envelope']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p
+                class="error-message"
+                v-if="getError('email') && !emailValidate()"
+              >
+                {{ getError("email") }}
+              </p>
+            </div>
           </div>
 
           <!-- INPUT PASSWORD -->
-          <label for="password">Password</label>
-          <div class="input-wraper">
-            <font-awesome-icon
-              class="icon"
-              :icon="icon"
-              @click="showPassword"
-            />
-            <input
-              :type="type"
-              :class="{
-                'error-input': getError('password'),
-                'valid-input': passwordValidate(),
-              }"
-              id="password"
-              placeholder="Enter Password"
-              v-model="password"
-              @input="toggleIcon()"
-            />
-          </div>
-          <div class="error-message-placeholder">
-            <p
-              class="error-message"
-              v-if="getError('password') && !passwordValidate()"
-            >
-              {{ getError("password") }}
-            </p>
+          <div class="input-wraper password">
+            <div class="wrapper-for-icon">
+              <input
+                :type="type"
+                :class="{
+                  'error-input': getError('password'),
+                  'valid-input': passwordValidate(),
+                }"
+                id="password"
+                placeholder="Password"
+                v-model="password"
+                @input="toggleIcon()"
+              />
+              <font-awesome-icon
+                class="icon"
+                :icon="icon"
+                @click="showPassword"
+              />
+            </div>
+            <div class="error-message-placeholder">
+              <p
+                class="error-message"
+                v-if="getError('password') && !passwordValidate()"
+              >
+                {{ getError("password") }}
+              </p>
+            </div>
           </div>
 
           <!-- INPUT PASSWORD CONFIRM -->
-          <label for="password-confirm">Password Confirm</label>
-          <div class="input-wraper">
-            <font-awesome-icon
-              class="icon"
-              :icon="icon"
-              @click="showPassword"
-            />
-            <input
-              :type="type"
-              :class="{
-                'error-input': getError('passwordConfirm'),
-                'valid-input': passwordConfirmValidate(),
-              }"
-              id="password-confirm"
-              placeholder="Confirm Password"
-              v-model="passwordConfirm"
-              @input="toggleIcon()"
-            />
+          <div class="input-wraper password-confirm">
+            <div class="wrapper-for-icon">
+              <input
+                :type="type"
+                :class="{
+                  'error-input': getError('passwordConfirm'),
+                  'valid-input': passwordConfirmValidate(),
+                }"
+                id="password-confirm"
+                placeholder="Conferma Password"
+                v-model="passwordConfirm"
+                @input="toggleIcon()"
+              />
+              <font-awesome-icon
+                class="icon"
+                :icon="icon"
+                @click="showPassword"
+              />
+            </div>
+            <div class="error-message-placeholder">
+              <p
+                class="error-message"
+                v-if="getError('passwordConfirm') && !passwordConfirmValidate()"
+              >
+                {{ getError("passwordConfirm") }}
+              </p>
+            </div>
           </div>
-          <div class="error-message-placeholder">
-            <p
-              class="error-message"
-              v-if="getError('passwordConfirm') && !passwordConfirmValidate()"
-            >
-              {{ getError("passwordConfirm") }}
-            </p>
+
+          <!-- INPUT STREET -->
+          <div class="input-wraper street">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('street'),
+                }"
+                v-model="street"
+                id="street"
+                placeholder="Via"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'location-dot']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError('street')">
+                {{ getError("street") }}
+              </p>
+            </div>
           </div>
-          <button class="btn" type="submit">SIGN UP</button>
+
+          <!-- INPUT HOUSE NUMBER -->
+          <div class="input-wraper house-number">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('houseNumber'),
+                }"
+                v-model="houseNumber"
+                id="house-number"
+                placeholder="Numero civico"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'door-closed']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError('houseNumber')">
+                {{ getError("houseNumber") }}
+              </p>
+            </div>
+          </div>
+
+          <!-- INPUT CITY -->
+          <div class="input-wraper city">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('city'),
+                }"
+                v-model="city"
+                id="city"
+                placeholder="Città"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'city']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError('city')">
+                {{ getError("city") }}
+              </p>
+            </div>
+          </div>
+
+          <!-- INPUT POSTAL CODE -->
+          <div class="input-wraper postal-code">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('postalCode'),
+                }"
+                v-model="postalCode"
+                id="spostal-code"
+                placeholder="CAP"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'hashtag']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError('postalCode')">
+                {{ getError("postalCode") }}
+              </p>
+            </div>
+          </div>
+
+          <!-- INPUT DOORBELL -->
+          <div class="input-wraper doorbell">
+            <div class="wrapper-for-icon">
+              <input
+                type="text"
+                :class="{
+                  'error-input': getError('doorbell'),
+                }"
+                v-model="doorbell"
+                id="bell"
+                placeholder="Citofono"
+              />
+              <font-awesome-icon class="icon" :icon="['fas', 'bell']" />
+            </div>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError('doorbell')">
+                {{ getError("doorbell") }}
+              </p>
+            </div>
+          </div>
+          <div class="input-wraper button">
+            <button class="btn" type="submit">REGISTRATI</button>
+            <div class="error-message-placeholder">
+              <p class="error-message" v-if="getError()">
+                {{ getError("postalCode") }}
+              </p>
+            </div>
+          </div>
         </form>
       </template>
       <template #footer>
         <div class="create-acount-link-wraper">
-          <p>Already Have an Account?</p>
-          <router-link to="/signin" class="create-account-link"
-            >Login to Account</router-link
-          >
+          <p>
+            Hai già un accoun
+            <router-link to="/signin" class="create-account-link"
+              >Accedi
+            </router-link>
+          </p>
         </div>
       </template>
     </CardForm>
@@ -135,19 +272,21 @@
 
 <script setup>
 import CardForm from "../components/CardForm.vue";
-import { ref, onBeforeMount } from "vue";
-// import { signup } from "../api/authService.js";
-// import { useAvatarStore } from "../store/storeAuth.js";
+import { ref } from "vue";
+import { signup } from "../api/authService.js";
 
-// const API_URL_AVATAR = import.meta.env.VITE_API_URL_AVATAR;
-// const avatarStore = useAvatarStore();
 const icon = ref(["fas", "lock"]);
 const name = ref("");
+const surname = ref("");
 const email = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
+const street = ref("");
+const houseNumber = ref("");
+const city = ref("");
+const postalCode = ref("");
+const doorbell = ref("");
 const type = ref("password");
-const choosenAvatar = ref("avatar_1.png");
 let successMessage = ref("");
 let errorMessage = ref("");
 let errorsBackend = ref([]);
@@ -159,19 +298,31 @@ const handleSignup = async () => {
   try {
     const data = await signup({
       name: name.value,
+      surname: surname.value,
       email: email.value,
       password: password.value,
       passwordConfirm: passwordConfirm.value,
-      avatar: choosenAvatar.value,
+      address: {
+        street: street.value,
+        houseNumber: houseNumber.value,
+        city: city.value,
+        postalCode: postalCode.value,
+        doorbell: doorbell.value,
+      },
     });
     console.log("Signup success:", data);
     console.log("Response", data.message);
     successMessage.value = data.message;
     name.value = "";
+    surname.value = "";
     email.value = "";
     password.value = "";
     passwordConfirm.value = "";
-    choosenAvatar.value = "";
+    street.value = "";
+    houseNumber.value = "";
+    city.value = "";
+    postalCode.value = "";
+    doorbell.value = "";
   } catch (error) {
     console.log(error);
     errorMessage.value = error.response.data.message;
@@ -212,6 +363,7 @@ const getError = (field) => {
 };
 
 const nameValidate = () => (name.value?.length || 0) < 2;
+const surnameValidate = () => (surname.value?.length || 0) < 2;
 
 const emailValidate = () => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -225,10 +377,6 @@ const passwordConfirmValidate = () => {
     passwordConfirm.value === password.value
   );
 };
-
-// onBeforeMount(async () => {
-//   await avatarStore.fetchAvatars();
-// });
 </script>
 
 <style scoped>
@@ -240,89 +388,91 @@ const passwordConfirmValidate = () => {
   display: grid;
   align-items: start;
   justify-items: center;
-  /* border: 1px solid rgb(1, 2, 7); */
 }
 
 form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-areas:
+    "name"
+    "surname"
+    "email"
+    "password"
+    "password-confirm"
+    "street"
+    "house-number"
+    "city"
+    "postal-code"
+    "doorbell"
+    "button";
+  grid-template-rows: auto;
 }
 
-label,
-.avatar-title {
-  letter-spacing: 1.3px;
-  font-weight: var(--fw-bold);
-  color: var(--clr-dark-light);
+.wrapper-for-icon {
+  position: relative;
+}
+
+.name {
+  grid-area: name;
+}
+.surname {
+  grid-area: surname;
+}
+.email {
+  grid-area: email;
+}
+.password {
+  grid-area: password;
+}
+.password-confirm {
+  grid-area: password-confirm;
+}
+.street {
+  grid-area: street;
+}
+.house-number {
+  grid-area: house-number;
+}
+.city {
+  grid-area: city;
+}
+.postal-code {
+  grid-area: postal-code;
+}
+.door-bell {
+  grid-area: door-bell;
+}
+.button {
+  grid-area: button;
 }
 
 .input-wraper {
   display: flex;
   flex-direction: column;
-  position: relative;
+  /* position: relative; */
   /* margin-bottom: 0.35em; */
 }
 
 .icon {
   position: absolute;
-  left: 10px;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--clr-dark-light);
-}
-
-.avatars-wrapper {
-  display: flex;
-  margin-top: 0.75em;
-  margin: 0.75em -1em 0;
-  gap: 0.65em;
-  overflow: auto;
-  height: 3.75em;
-  align-items: center;
-  padding: 0 1em;
-  scrollbar-width: none;
-}
-
-.avatar-img {
-  width: 3em;
-  height: 3em;
-}
-.avatar {
-  width: 3em;
-  height: 3em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.avatar-label:hover {
-  scale: 1.1;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid var(--clr-accent);
-}
-
-input[type="radio"] {
-  display: none;
-}
-
-input[type="radio"]:checked + label {
-  border: 2px solid var(--clr-accent);
-  scale: 1.1;
-  border-radius: 50%;
+  font-size: var(--fs-body);
 }
 
 input {
-  padding: 1em 1em 1em 3em;
+  width: 100%;
+  padding: 1.45em 1em 1.45em 2em;
   border: none;
-  border-radius: 0.45em;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  color: var(--clr-dark-light);
+  border-radius: 50px;
+  color: var(--color-gray);
   letter-spacing: 1.3px;
-  border: 2px solid white;
+  border: 1px solid var(--color-gray);
 }
 
 input:focus {
-  border: 2px solid var(--clr-accent);
+  border: 1px solid var(--color-primary);
   outline: none;
 }
 
@@ -330,24 +480,26 @@ input:focus {
   font-weight: var(--fw-bold);
   color: var(--clr-dark-light);
   align-self: flex-start;
+  cursor: pointer;
 }
 
 .password-reset-link:hover {
-  color: var(--clr-accent);
+  color: var(--color-eco);
 }
 
 .btn {
-  background-color: var(--clr-accent);
+  grid-area: btn;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   border: none;
   padding: 1em;
-  border-radius: 0.45em;
+  border-radius: 50px;
   font-size: var(--fs-body);
   font-weight: var(--fw-bold);
   letter-spacing: 1.2px;
   cursor: pointer;
-  margin: 1em 0;
-  color: white;
-  border: 1px solid var(--clr-accent);
+  /* margin: 1em 0; */
+  border: 0;
   transition: all 0.3s ease-in-out;
 }
 
@@ -359,9 +511,8 @@ input:focus {
 
 .btn:hover,
 .btn:active {
-  color: var(--clr-accent);
-  background-color: white;
-  border: 1px solid var(--clr-accent);
+  background-color: var(--color-primary);
+  box-shadow: 0 0 20px #13dbf6;
 }
 
 .create-acount-link-wraper {
@@ -376,7 +527,7 @@ input:focus {
 }
 
 .create-account-link {
-  color: var(--clr-accent);
+  color: var(--color-primary);
   font-weight: var(--fw-bold);
 }
 
@@ -389,7 +540,7 @@ input:focus {
 
 .error-message-placeholder {
   height: var(--fs-small);
-  margin: 0.5em 0 0.5em;
+  margin: 0.25em 0 0.25em;
 }
 
 .message-placeholder {
@@ -411,14 +562,30 @@ input:focus {
 }
 
 .error-input {
-  border: 2px solid var(--clr-error);
+  border: 1px solid var(--clr-error);
 }
 
 .valid-input {
-  border: 2px solid var(--clr-valid);
+  border: 1px solid var(--clr-valid);
 }
 
 .valid-input:focus {
-  border: 2px solid var(--clr-valid);
+  border: 1px solid var(--clr-valid);
+}
+
+@media (min-width: 768px) {
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 1em;
+    grid-template-areas:
+      "name street"
+      "surname house-number"
+      "email city"
+      "password postal-code"
+      "password-confirm doorbell"
+      "button button";
+  }
 }
 </style>

@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import { useAuthStore } from "../store/storeAuth.js"; // Store di autenticazione
 import Signup from "../views/Singup.vue";
-// import Signin from "../views/Signin.vue";
+import Signin from "../views/Signin.vue";
 // import PasswordChange from "../views/PasswordChange.vue";
 // import PasswordForgot from "../views/PasswordForgot.vue";
 // import PasswordReset from "../views/PasswordReset.vue";
 // import DashBoard from "../views/DashBoard.vue";
-// import Home from "../views/Home.vue";
+import Home from "../views/Home.vue";
 // import Contact from "../views/Contact.vue";
 // import About from "../views/About.vue";
 // import DeleteAccount from "../views/DeleteAccount.vue";
@@ -16,11 +16,11 @@ import Signup from "../views/Singup.vue";
 // import UpdateAvatar from "../views/UpdateAvatar.vue";
 
 const routes = [
-  // { path: "/", component: Home },
+  { path: "/", component: Home },
   // { path: "/contact", component: Contact },
   // { path: "/about", component: About },
   { path: "/signup", component: Signup },
-  // { path: "/signin", component: Signin },
+  { path: "/signin", component: Signin },
   // { path: "/password-forgot", component: PasswordForgot },
   // { path: "/chat", component: Chat, meta: { requiresAuth: true } },
 

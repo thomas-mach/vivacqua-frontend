@@ -16,7 +16,12 @@
     </router-link>
     <div class="btn-wrapper">
       <button class="btn user-btn" @click="ui.toggleUserNav">
-        <font-awesome-icon class="user" :icon="['fas', 'user']" />
+        <font-awesome-icon
+          v-if="!isLoggedIn"
+          class="user"
+          :icon="['fas', 'user']"
+        />
+        <div class="avatar" v-if="isLoggedIn">{{ initials }}</div>
       </button>
 
       <button
@@ -34,35 +39,99 @@
       ></div>
 
       <div v-if="ui.showUserNav" class="user-menu">
-        <router-link to="/signup" @click="ui.showUserNav = false">
-          <font-awesome-icon
-            class="icon"
-            :icon="['fas', 'user-plus']"
-          />Registrati</router-link
+        <router-link
+          v-if="!isLoggedIn"
+          class="link"
+          to="/signup"
+          @click="ui.showUserNav = false"
         >
-        <router-link to="/signup" @click="ui.showUserNav = false">
+          Registrati
+          <font-awesome-icon class="icon" :icon="['fas', 'user-plus']" />
+        </router-link>
+
+        <router-link
+          v-if="!isLoggedIn"
+          class="link"
+          to="/signin"
+          @click="ui.showUserNav = false"
+        >
+          Accedi
           <font-awesome-icon
             class="icon"
             :icon="['fas', 'arrow-right-to-bracket']"
-          />Accedi</router-link
+        /></router-link>
+        <router-link
+          class="link"
+          to="/signup"
+          @click.prevent="(ui.showUserNav = false), handeleLogout()"
         >
-        <router-link to="/signup" @click="ui.showUserNav = false">
-          <font-awesome-icon
+          Logout<font-awesome-icon
             class="icon"
             :icon="['fas', 'arrow-right-from-bracket']"
-          />Logout</router-link
-        >
+        /></router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useUIStore } from "../stores/ui";
+import { useAuthStore } from "../stores/storeAuth.js";
+import { logout } from "../api/authService.js";
+import { useRouter } from "vue-router";
 
-const ui = useUIStore();
 let isDesktop = ref(window.innerWidth > 768);
+let isLoggedIn = ref(false);
+const user = ref(null);
+const router = useRouter();
+const ui = useUIStore();
+const initials = ref("");
+const authStore = useAuthStore();
+import Cookies from "js-cookie";
+
+const loadUserData = () => {
+  const storedUser = localStorage.getItem("user"); // Ottieni i dati dall'archivio
+  if (storedUser) {
+    user.value = JSON.parse(storedUser); // Trasforma in oggetto
+    isLoggedIn.value = user.value.isLoggedIn;
+  }
+};
+
+const getInitials = () => {
+  const ferstLetter = user.value.name.split("")[0];
+  const secondLetter = user.value.surname.split("")[0];
+  initials.value = ferstLetter + " " + secondLetter;
+};
+
+const handeleLogout = async () => {
+  console.log("hendeleLogout run...");
+  try {
+    const response = await logout();
+    Cookies.remove("jwt", { path: "/" });
+    authStore.logout();
+    router.push("/");
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Carica i dati dell'utente quando il componente è montato
+watch(
+  () => authStore.user,
+  (newUser) => {
+    user.value = newUser;
+    isLoggedIn.value = newUser?.isLoggedIn ?? false;
+
+    if (newUser?.name && newUser?.surname) {
+      getInitials();
+    } else {
+      initials.value = "";
+    }
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <style scoped>
@@ -100,8 +169,8 @@ let isDesktop = ref(window.innerWidth > 768);
   position: absolute;
   top: 100%;
   right: 1em;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-light);
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 0.5rem 1rem;
@@ -110,6 +179,23 @@ let isDesktop = ref(window.innerWidth > 768);
   flex-direction: column;
   gap: 0.5rem;
   z-index: 1000;
+}
+
+.avatar {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--fs-body);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-gray);
 }
 
 .user-menu-overlay {
@@ -123,7 +209,7 @@ let isDesktop = ref(window.innerWidth > 768);
 }
 
 .icon {
-  margin-right: 0.75em;
+  margin-left: 0.75em;
 }
 
 .nav-toggle {

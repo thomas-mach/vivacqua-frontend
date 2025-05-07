@@ -13,6 +13,11 @@ import {
   faUserPlus,
   faArrowRightToBracket,
   faArrowRightFromBracket,
+  faLocationDot,
+  faDoorClosed,
+  faCity,
+  faHashtag,
+  faBell,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
@@ -31,7 +36,12 @@ library.add(
   faPaperPlane,
   faUserPlus,
   faArrowRightToBracket,
-  faArrowRightFromBracket
+  faArrowRightFromBracket,
+  faLocationDot,
+  faDoorClosed,
+  faCity,
+  faHashtag,
+  faBell
 );
 
 // Esporta l'icona per registrarla nel main.js
