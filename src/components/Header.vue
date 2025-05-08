@@ -61,6 +61,7 @@
             :icon="['fas', 'arrow-right-to-bracket']"
         /></router-link>
         <router-link
+          v-if="isLoggedIn"
           class="link"
           to="/signup"
           @click.prevent="(ui.showUserNav = false), handeleLogout()"
@@ -227,7 +228,7 @@ watch(
 .logo {
   width: 40px;
   height: 40px;
-  display: block; /* evita piccoli spazi indesiderati inline */
+  display: block;
   color: var(--color-primary);
 }
 

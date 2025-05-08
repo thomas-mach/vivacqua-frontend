@@ -7,9 +7,9 @@
 
     <!-- Nav: visibile fisso su desktop, con slide animata su mobile -->
     <transition name="slide" mode="out-in" v-if="isMobile">
-      <nav v-if="isReady && isMobile && ui.showNav" class="nav mobile-nav">
+      <div v-if="isReady && isMobile && ui.showNav" class="nav mobile-nav">
         <slot name="nav" />
-      </nav>
+      </div>
     </transition>
 
     <!-- overlay -->
@@ -78,7 +78,7 @@ const updateScreenSize = () => {
   top: 0;
   left: 0;
   height: 100vh;
-  background: white;
+  background-color: var(--color-accent);
   z-index: 1000;
   padding: 1rem;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -159,6 +159,7 @@ const updateScreenSize = () => {
 
   .nav {
     grid-area: nav;
+    background-color: var(--color-accent);
     position: sticky;
     top: 0;
     height: 100vh;

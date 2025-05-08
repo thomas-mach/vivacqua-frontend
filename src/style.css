@@ -9,6 +9,7 @@
 :root {
   --ff-primary: "Inter", sans-serif;
 
+  --fw-tiny: 100;
   --fw-reg: 300;
   --fw-bold: 600;
 
@@ -76,6 +77,12 @@ body {
   font-size: var(--fs-body);
   line-height: 1.6;
   margin: 0 auto;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* UTILS */

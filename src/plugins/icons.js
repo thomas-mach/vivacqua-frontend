@@ -18,6 +18,7 @@ import {
   faCity,
   faHashtag,
   faBell,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
@@ -41,7 +42,8 @@ library.add(
   faDoorClosed,
   faCity,
   faHashtag,
-  faBell
+  faBell,
+  faGear
 );
 
 // Esporta l'icona per registrarla nel main.js

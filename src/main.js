@@ -6,6 +6,7 @@ import App from "./App.vue";
 import "./style.css";
 import "@fontsource/space-grotesk/300.css";
 import "@fontsource/space-grotesk/700.css";
+import "@fontsource/inter/100.css";
 import "@fontsource/inter/300.css";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/600.css";

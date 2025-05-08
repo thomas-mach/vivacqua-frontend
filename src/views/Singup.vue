@@ -257,12 +257,10 @@
         </form>
       </template>
       <template #footer>
-        <div class="create-acount-link-wraper">
+        <div class="login-link-wraper">
           <p>
             Hai già un accoun
-            <router-link to="/signin" class="create-account-link"
-              >Accedi
-            </router-link>
+            <router-link to="/signin" class="login-link">Accedi </router-link>
           </p>
         </div>
       </template>
@@ -476,17 +474,6 @@ input:focus {
   outline: none;
 }
 
-.password-reset-link {
-  font-weight: var(--fw-bold);
-  color: var(--clr-dark-light);
-  align-self: flex-start;
-  cursor: pointer;
-}
-
-.password-reset-link:hover {
-  color: var(--color-eco);
-}
-
 .btn {
   grid-area: btn;
   background-color: var(--color-primary);
@@ -503,9 +490,9 @@ input:focus {
   transition: all 0.3s ease-in-out;
 }
 
-.password-reset-link:hover,
-.password-reset-link:active {
-  color: var(--clr-accent);
+.login-link:hover,
+.login-link:active {
+  color: var(--color-accent);
   text-decoration: underline;
 }
 
@@ -515,18 +502,18 @@ input:focus {
   box-shadow: 0 0 20px #13dbf6;
 }
 
-.create-acount-link-wraper {
+.login-link-wraper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.create-acount-link-wraper p {
+.login-link-wraper p {
   font-weight: var(--fw-bold);
   color: var(--clr-dark-light);
 }
 
-.create-account-link {
+.login-link {
   color: var(--color-primary);
   font-weight: var(--fw-bold);
 }

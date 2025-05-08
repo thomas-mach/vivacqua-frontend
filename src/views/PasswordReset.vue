@@ -2,7 +2,7 @@
   <div class="container">
     <CardForm>
       <template #title>
-        <p>Accedi</p>
+        <p class="title">Nuova password</p>
       </template>
       <template #message>
         <div class="message-placeholder">
@@ -15,25 +15,9 @@
         </div>
       </template>
       <template #form>
-        <form novalidate @submit.prevent="hendelSignin">
-          <!-- INPUT EMAIL -->
-          <div class="input-wraper">
-            <input
-              type="text"
-              :class="{ 'error-input': emailInputError || errorMessage }"
-              v-model="email"
-              id="email"
-              placeholder="Email"
-            />
-            <font-awesome-icon class="icon" :icon="['fas', 'envelope']" />
-          </div>
-          <div class="error-message-placeholder">
-            <p class="error-message" v-if="emailInputError">
-              {{ emailInputError }}
-            </p>
-          </div>
-
+        <form novalidate @submit.prevent="hendleResetPassword">
           <!-- INPUT PASSWORD -->
+
           <div class="input-wraper">
             <font-awesome-icon
               class="icon"
@@ -42,7 +26,10 @@
             />
             <input
               :type="type"
-              :class="{ 'error-input': passwordInputError || errorMessage }"
+              :class="{
+                'error-input': getError('password'),
+                'valid-input': passwordValidate(),
+              }"
               id="password"
               placeholder="Password"
               v-model="password"
@@ -50,30 +37,49 @@
             />
           </div>
           <div class="error-message-placeholder">
-            <p class="error-message" v-if="passwordInputError">
-              {{ passwordInputError }}
+            <p
+              class="error-message"
+              v-if="getError('password') && !passwordValidate()"
+            >
+              {{ getError("password") }}
             </p>
           </div>
 
-          <router-link to="/password-forgot" class="password-reset-link"
-            >Hai dimenticato la password?</router-link
-          >
+          <!-- INPUT PASSWORD CONFIRM -->
 
-          <div
-            v-if="!isEmailVerified"
-            class="password-reset-link"
-            @click="hendleResendEmail()"
-          >
-            Invia nuovamente l'email di verifica
+          <div class="input-wraper">
+            <font-awesome-icon
+              class="icon"
+              :icon="icon"
+              @click="showPassword"
+            />
+            <input
+              :type="type"
+              :class="{
+                'error-input': getError('passwordConfirm'),
+                'valid-input': passwordConfirmValidate(),
+              }"
+              id="password-confirm"
+              placeholder="Conferma Password"
+              v-model="passwordConfirm"
+              @input="toggleIcon()"
+            />
           </div>
-          <button class="btn">ACCEDI</button>
+          <div class="error-message-placeholder">
+            <p
+              class="error-message"
+              v-if="getError('passwordConfirm') && !passwordConfirmValidate()"
+            >
+              {{ getError("passwordConfirm") }}
+            </p>
+          </div>
+          <button class="btn" type="submit">INVIA</button>
         </form>
       </template>
       <template #footer>
         <div class="create-acount-link-wraper">
-          <p>Non hai un account?</p>
-          <router-link to="/signup" class="create-account-link"
-            >Crea un account</router-link
+          <router-link to="/signin" class="create-account-link"
+            >Torna al Login</router-link
           >
         </div>
       </template>
@@ -83,95 +89,56 @@
 
 <script setup>
 import CardForm from "../components/CardForm.vue";
-import { ref, inject } from "vue";
-import { signin, resendEmail } from "../api/authService.js";
-import { useRouter } from "vue-router";
-import { useAuthStore } from "../stores/storeAuth.js";
+import { ref } from "vue";
+import { resetPassword } from "../api/authService.js";
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
+const route = useRoute();
+const token = route.query.token;
 
-// const authMessage = useMessagesStore();
 const icon = ref(["fas", "lock"]);
 const password = ref("");
-const email = ref("");
+const passwordConfirm = ref("");
 const type = ref("password");
-const router = useRouter();
-const authStore = useAuthStore();
 let successMessage = ref("");
 let errorMessage = ref("");
 let errorsBackend = ref([]);
-let emailInputError = ref("");
-let passwordInputError = ref("");
-let isEmailVerified = ref(true);
-let isPasswordEndEmailCorrect = ref(true);
 
-const hendelSignin = async () => {
+const hendleResetPassword = async () => {
   errorsBackend.value = [];
   successMessage.value = "";
   errorMessage.value = "";
-  emailInputError.value = "";
-  emailValidate();
-  passwordValidate();
   try {
-    const response = await signin({
-      email: email.value,
+    const response = await resetPassword({
+      token: token,
       password: password.value,
+      passwordConfirm: passwordConfirm.value,
     });
-    console.log("signin", response);
-    email.value = "";
     password.value = "";
-    // authMessage.setMessage("You are loged in!");
-    router.push("/");
-    authStore.login({
-      isLoggedIn: true,
-      name: response.data.user.name,
-      surname: response.data.user.surname,
-      email: response.data.user.email,
-    });
-    console.log(localStorage.getItem("user"));
-  } catch (err) {
-    console.log("Error Response:", err.response);
-    errorMessage.value = err?.response?.data?.message ?? "";
-    isEmailVerified.value = err.response?.data?.data?.isVerified ?? true;
-    err.response?.data?.message === "Email o password non valide"
-      ? (isPasswordEndEmailCorrect.value = false)
-      : true;
-  }
-};
-
-const hendleResendEmail = async () => {
-  errorsBackend.value = [];
-  successMessage.value = "";
-  errorMessage.value = "";
-  emailInputError.value = "";
-  emailValidate();
-  passwordValidate();
-  try {
-    const response = await resendEmail({
-      email: email.value,
-      password: password.value,
-    });
-    successMessage.value = response.message;
-    email.value = "";
-    password.value = "";
-    console.log(response);
+    passwordConfirm.value = "";
+    router.push("/signin");
   } catch (error) {
-    errorMessage.value = error.error;
-    // errorMessage.value = error.response.data.message;
-    isEmailVerified.value = error.response.data.isVerified;
+    errorMessage.value = error.response?.data?.message;
+    if (error.response?.data?.errors) {
+      errorsBackend.value = error.response.data.errors;
+    } else {
+      errorsBackend.value = [{ field: "general", message: "Error" }];
+    }
   }
 };
 
 const toggleIcon = () => {
-  if (!password.value) {
-    icon.value = ["fas", "lock"];
-    type.value = "password";
-  } else {
+  if (password.value || passwordConfirm.value) {
     icon.value =
       type.value === "password" ? ["fas", "eye-slash"] : ["fas", "eye"];
+  } else {
+    icon.value = ["fas", "lock"];
+    type.value = "password";
   }
 };
 
 const showPassword = () => {
-  if (password.value.length > 0) {
+  if (password.value.length > 0 || passwordConfirm.value.length > 0) {
     if (type.value === "password") {
       type.value = "text";
       icon.value = ["fas", "eye"];
@@ -182,25 +149,17 @@ const showPassword = () => {
   }
 };
 
-const emailValidate = () => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  email.value = email.value.trim();
-  if (!email.value) {
-    emailInputError.value = "L'email è obbligatoria";
-    return false;
-  } else if (!regex.test(email.value)) {
-    emailInputError.value = "Per favore, inserisci un indirizzo email valido.";
-    return false;
-  }
-  emailInputError.value = "";
-  return true;
+const getError = (field) => {
+  const errorObj = errorsBackend.value.find((error) => error.field === field);
+  return errorObj ? errorObj.message : null;
 };
 
-const passwordValidate = () => {
-  if (!password.value) {
-    return (passwordInputError.value = "La password è richiesta.");
-  }
-  return (passwordInputError.value = "");
+const passwordValidate = () => password.value.length >= 8;
+const passwordConfirmValidate = () => {
+  return (
+    passwordConfirm.value.length >= 8 &&
+    passwordConfirm.value === password.value
+  );
 };
 </script>
 
@@ -251,16 +210,15 @@ input:focus {
   outline: none;
 }
 
-.password-reset-link {
+/* .password-reset-link {
   font-weight: var(--fw-bold);
   color: var(--clr-dark-light);
   align-self: flex-start;
-  cursor: pointer;
-}
+} */
 
-.password-reset-link:hover {
-  color: var(--color-eco);
-}
+/* .password-reset-link:hover {
+  color: var(--clr-accent);
+} */
 
 .btn {
   grid-area: btn;
@@ -280,9 +238,7 @@ input:focus {
 }
 
 .password-reset-link:hover,
-.password-reset-link:active,
-.create-account-link:hover,
-.create-account-link:active {
+.password-reset-link:active {
   color: var(--color-accent);
   text-decoration: underline;
 }
@@ -305,9 +261,8 @@ input:focus {
 }
 
 .create-account-link {
-  color: var(--color-primary);
+  color: var(--clr-accent);
   font-weight: var(--fw-bold);
-  cursor: pointer;
 }
 
 .error-message {
@@ -319,12 +274,13 @@ input:focus {
 
 .error-message-placeholder {
   height: var(--fs-small);
-  margin: 0.25em 0 0.25em;
+  margin: 0.5em 0 0.5em;
 }
 
 .message-placeholder {
   min-height: var(--fs-body);
   margin: 0.5em 0 0.5em;
+  color: var(--clr-error);
 }
 
 .success-generic-message {
@@ -349,5 +305,9 @@ input:focus {
 
 .valid-input:focus {
   border: 1px solid var(--clr-valid);
+}
+
+.title {
+  font-size: var(--fs-h2);
 }
 </style>
