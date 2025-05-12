@@ -92,10 +92,13 @@ import CardForm from "../components/CardForm.vue";
 import { ref } from "vue";
 import { resetPassword } from "../api/authService.js";
 import { useRoute, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+const toast = useToast();
 const router = useRouter();
 const route = useRoute();
 const token = route.query.token;
-
 const icon = ref(["fas", "lock"]);
 const password = ref("");
 const passwordConfirm = ref("");

@@ -15,7 +15,7 @@
         <path d="M12 2C12 2 6 9 6 13a6 6 0 0012 0c0-4-6-11-6-11z" />
       </svg>
 
-      <p class="logo-text">Vivaqua</p>
+      <p class="logo-text">Vivacqua</p>
     </div>
     <div class="divider"></div>
 
@@ -81,10 +81,24 @@
             <!-- </div> -->
           </li>
           <transition name="slide">
+            <!-- SUBMENU IMPOSTAZIONI -->
             <ul v-if="ui.isSettingsOpen" class="submenu">
               <li>
-                <router-link class="sublink" to="/settings/password-update">
+                <router-link
+                  class="sublink"
+                  to="/settings/password-update"
+                  @click="(ui.showNav = false), ui.closeMenu()"
+                >
                   - Cambio password</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  class="sublink"
+                  to="/settings/delete-account"
+                  @click="(ui.showNav = false), ui.closeMenu()"
+                >
+                  - Elimina Account</router-link
                 >
               </li>
             </ul>
@@ -114,12 +128,14 @@ import { useUIStore } from "../stores/ui";
 import { useAuthStore } from "../stores/storeAuth.js";
 import { logout } from "../api/authService.js";
 import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
+import { useToast } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 // let isDesktop = ref(window.innerWidth > 768);
 // let isSettingsOpen = ref(false);
 
 let isLoggedIn = ref(false);
+const toast = useToast();
 const user = ref(null);
 const router = useRouter();
 const ui = useUIStore();
@@ -138,7 +154,9 @@ const loadUserData = () => {
 const getInitials = () => {
   const name = user.value?.name || "";
   const surname = user.value?.surname || "";
-  initials.value = `${name[0] ?? ""}${surname[0] ?? ""}`;
+  initials.value = `${name[0].toUpperCase() ?? ""}${
+    surname[0].toUpperCase() ?? ""
+  }`;
 };
 
 const handleLogout = async () => {
@@ -148,6 +166,7 @@ const handleLogout = async () => {
     Cookies.remove("jwt", { path: "/" });
     authStore.logout();
     ui.closeMenu();
+    toast.success("Hai effettuato il logout.", { timeout: 3000 });
     await router.push("/");
     console.log(response);
   } catch (error) {

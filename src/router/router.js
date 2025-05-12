@@ -5,15 +5,12 @@ import Signin from "../views/Signin.vue";
 import PasswordUpdate from "../views/PasswordUpdate.vue";
 import PasswordForgot from "../views/PasswordForgot.vue";
 import PasswordReset from "../views/PasswordReset.vue";
+import autoLogin from "../components/autoLogin.vue";
+import ReactivateUser from "../components/ReactivateUser.vue";
 // import DashBoard from "../views/DashBoard.vue";
 import Home from "../views/Home.vue";
-// import Contact from "../views/Contact.vue";
 // import About from "../views/About.vue";
-// import DeleteAccount from "../views/DeleteAccount.vue";
-// import AddComment from "../components/AddComment.vue";
-// import UserComments from "../components/UserComments.vue";
-// import Chat from "../views/Chat.vue";
-// import UpdateAvatar from "../views/UpdateAvatar.vue";
+import DeleteAccount from "../views/DeleteAccount.vue";
 
 const routes = [
   { path: "/", component: Home },
@@ -22,7 +19,8 @@ const routes = [
   { path: "/signup", component: Signup },
   { path: "/signin", component: Signin },
   { path: "/password-forgot", component: PasswordForgot },
-  // { path: "/chat", component: Chat, meta: { requiresAuth: true } },
+  { path: "/auto-lgoin", component: autoLogin },
+  { path: "/reactivate-user", component: ReactivateUser },
 
   {
     path: "/reset-password",
@@ -38,6 +36,11 @@ const routes = [
       {
         path: "password-update",
         component: PasswordUpdate,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "delete-account",
+        component: DeleteAccount,
         meta: { requiresAuth: true },
       },
     ],

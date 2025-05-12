@@ -68,7 +68,7 @@ export const resetPassword = async (userData) => {
 export const resendEmail = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/resendEmail`, userData, {
-      withCredentials: true,
+      withCredentials: false,
     });
     return response.data;
   } catch (error) {
@@ -97,7 +97,7 @@ export const updatePassword = async (userData) => {
 export const deleteAccount = async () => {
   try {
     const response = await axios.patch(
-      `${API_URL_USER}/deleteMe`,
+      `${API_URL}/deleteMe`,
       {},
       {
         withCredentials: true,
@@ -137,5 +137,27 @@ export const updateAvatar = async (userData) => {
     return response.data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getMe = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/getMe`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const reactivateUser = async (userData) => {
+  try {
+    const response = await axios.post(`${API_URL}/reactivate`, userData, {
+      withCredentials: false,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };

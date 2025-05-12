@@ -6,9 +6,9 @@
       </template>
       <template #message>
         <div class="message-placeholder">
-          <p class="success-generic-message" v-if="successMessage">
+          <!-- <p class="success-generic-message" v-if="successMessage">
             {{ successMessage }}
-          </p>
+          </p> -->
           <p class="error-generic-message" v-if="errorMessage">
             {{ errorMessage }}
           </p>
@@ -58,6 +58,12 @@
           <router-link to="/password-forgot" class="password-reset-link"
             >Hai dimenticato la password?</router-link
           >
+          <router-link
+            v-if="reactivateAccountLink"
+            to="/reactivate-user"
+            class="password-reset-link"
+            >Reattiva il tuo account</router-link
+          >
 
           <div
             v-if="!isEmailVerified"
@@ -87,14 +93,18 @@ import { ref, inject } from "vue";
 import { signin, resendEmail } from "../api/authService.js";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/storeAuth.js";
+import { useToast } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 // const authMessage = useMessagesStore();
+const toast = useToast();
 const icon = ref(["fas", "lock"]);
 const password = ref("");
 const email = ref("");
 const type = ref("password");
 const router = useRouter();
 const authStore = useAuthStore();
+let reactivateAccountLink = ref(false);
 let successMessage = ref("");
 let errorMessage = ref("");
 let errorsBackend = ref([]);
@@ -104,6 +114,7 @@ let isEmailVerified = ref(true);
 let isPasswordEndEmailCorrect = ref(true);
 
 const hendelSignin = async () => {
+  const submittedEmail = email.value;
   errorsBackend.value = [];
   successMessage.value = "";
   errorMessage.value = "";
@@ -118,7 +129,7 @@ const hendelSignin = async () => {
     console.log("signin", response);
     email.value = "";
     password.value = "";
-    // authMessage.setMessage("You are loged in!");
+    toast.success("Accesso effettuato con successo!", { timeout: 3000 });
     router.push("/");
     authStore.login({
       isLoggedIn: true,
@@ -128,6 +139,12 @@ const hendelSignin = async () => {
     });
     console.log(localStorage.getItem("user"));
   } catch (err) {
+    if (err?.response?.data?.error?.code === "ACCOUNT_DISABLED") {
+      reactivateAccountLink.value = true;
+      authStore.login({
+        email: submittedEmail,
+      });
+    }
     console.log("Error Response:", err.response);
     errorMessage.value = err?.response?.data?.message ?? "";
     isEmailVerified.value = err.response?.data?.data?.isVerified ?? true;
@@ -149,7 +166,7 @@ const hendleResendEmail = async () => {
       email: email.value,
       password: password.value,
     });
-    successMessage.value = response.message;
+    toast.success("Verifica la tua mail!", { timeout: 3000 });
     email.value = "";
     password.value = "";
     console.log(response);

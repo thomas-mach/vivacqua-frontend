@@ -6,9 +6,9 @@
       </template>
       <template #message>
         <div class="message-placeholder">
-          <p class="success-generic-message" v-if="successMessage">
+          <!-- <p class="success-generic-message" v-if="successMessage">
             {{ successMessage }}
-          </p>
+          </p> -->
           <p class="error-generic-message" v-if="errorMessage">
             {{ errorMessage }}
           </p>
@@ -50,7 +50,10 @@
 import CardForm from "../components/CardForm.vue";
 import { ref } from "vue";
 import { forgotPassword } from "../api/authService.js";
+import { useToast } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
+const toast = useToast();
 const email = ref("");
 let emailInputError = ref("");
 let successMessage = ref("");
@@ -67,7 +70,7 @@ const hendleForgotPasssword = async () => {
     const response = await forgotPassword({
       email: email.value,
     });
-    successMessage.value = response.message;
+    toast.success(response.message);
     email.value = "";
   } catch (error) {
     errorMessage.value = error.response.data.message;

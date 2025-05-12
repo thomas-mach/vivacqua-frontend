@@ -6,9 +6,9 @@
       </template>
       <template #message>
         <div class="message-placeholder">
-          <p class="success-generic-message" v-if="successMessage">
+          <!-- <p class="success-generic-message" v-if="successMessage">
             {{ successMessage }}
-          </p>
+          </p> -->
           <p class="error-generic-message" v-if="errorMessage">
             {{ errorMessage }}
           </p>
@@ -272,7 +272,10 @@
 import CardForm from "../components/CardForm.vue";
 import { ref } from "vue";
 import { signup } from "../api/authService.js";
+import { useToast } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
+const toast = useToast();
 const icon = ref(["fas", "lock"]);
 const name = ref("");
 const surname = ref("");
@@ -310,7 +313,8 @@ const handleSignup = async () => {
     });
     console.log("Signup success:", data);
     console.log("Response", data.message);
-    successMessage.value = data.message;
+    toast.success(data.message);
+    // successMessage.value = data.message;
     name.value = "";
     surname.value = "";
     email.value = "";
