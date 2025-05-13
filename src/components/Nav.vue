@@ -95,6 +95,15 @@
               <li>
                 <router-link
                   class="sublink"
+                  to="/settings/update-me"
+                  @click="(ui.showNav = false), ui.closeMenu()"
+                >
+                  - Modifica profilo</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  class="sublink"
                   to="/settings/delete-account"
                   @click="(ui.showNav = false), ui.closeMenu()"
                 >

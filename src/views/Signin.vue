@@ -90,7 +90,7 @@
 <script setup>
 import CardForm from "../components/CardForm.vue";
 import { ref, inject } from "vue";
-import { signin, resendEmail } from "../api/authService.js";
+import { signin, resendEmail, getMe } from "../api/authService.js";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/storeAuth.js";
 import { useToast } from "vue-toastification";
@@ -126,17 +126,27 @@ const hendelSignin = async () => {
       email: email.value,
       password: password.value,
     });
+    console.log("response from signin", response);
+    const getMeResponse = await getMe();
+    console.log("get me responsne", getMeResponse);
+    const userData = {
+      isLoggedIn: true,
+      name: getMeResponse.data.user.name,
+      surname: getMeResponse.data.user.surname,
+      email: getMeResponse.data.user.email,
+      street: getMeResponse.data.user.street,
+      houseNumber: getMeResponse.data.user.houseNumber,
+      city: getMeResponse.data.user.city,
+      postalCode: getMeResponse.data.user.postalCode,
+      doorbell: getMeResponse.data.user.doorbell,
+    };
+
     console.log("signin", response);
     email.value = "";
     password.value = "";
     toast.success("Accesso effettuato con successo!", { timeout: 3000 });
     router.push("/");
-    authStore.login({
-      isLoggedIn: true,
-      name: response.data.user.name,
-      surname: response.data.user.surname,
-      email: response.data.user.email,
-    });
+    authStore.login(userData);
     console.log(localStorage.getItem("user"));
   } catch (err) {
     if (err?.response?.data?.error?.code === "ACCOUNT_DISABLED") {

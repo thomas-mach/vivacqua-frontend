@@ -7,6 +7,7 @@ import PasswordForgot from "../views/PasswordForgot.vue";
 import PasswordReset from "../views/PasswordReset.vue";
 import autoLogin from "../components/autoLogin.vue";
 import ReactivateUser from "../components/ReactivateUser.vue";
+import UpdateMe from "../views/UpdateMe.vue";
 // import DashBoard from "../views/DashBoard.vue";
 import Home from "../views/Home.vue";
 // import About from "../views/About.vue";
@@ -41,6 +42,11 @@ const routes = [
       {
         path: "delete-account",
         component: DeleteAccount,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "update-me",
+        component: UpdateMe,
         meta: { requiresAuth: true },
       },
     ],

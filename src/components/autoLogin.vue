@@ -17,14 +17,21 @@ const authStore = useAuthStore();
 onMounted(async () => {
   try {
     const response = await getMe();
-    router.push("/");
-    console.log(response);
-    authStore.login({
+
+    const userData = {
       isLoggedIn: true,
       name: response.data.user.name,
       surname: response.data.user.surname,
       email: response.data.user.email,
-    });
+      street: response.data.user.street,
+      houseNumber: response.data.user.houseNumber,
+      city: response.data.user.city,
+      postalCode: response.data.user.postalCode,
+      doorbell: response.data.user.doorbell,
+    };
+    router.push("/");
+    console.log(response);
+    authStore.login(userData);
     toast.success("Accesso effettuato con successo!", { timeout: 3000 });
   } catch (error) {
     console.log(error);

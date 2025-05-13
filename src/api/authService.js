@@ -161,3 +161,14 @@ export const reactivateUser = async (userData) => {
     throw error;
   }
 };
+
+export const updateMe = async (userData) => {
+  try {
+    const response = await axios.patch(`${API_URL}/updateMe`, userData, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
