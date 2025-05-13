@@ -262,6 +262,12 @@
             Hai già un accoun
             <router-link to="/signin" class="login-link">Accedi </router-link>
           </p>
+          <router-link
+            v-if="reactivateAccountLink"
+            to="/reactivate-user"
+            class="password-reset-link"
+            >Reattiva il tuo account</router-link
+          >
         </div>
       </template>
     </CardForm>
@@ -274,7 +280,9 @@ import { ref } from "vue";
 import { signup } from "../api/authService.js";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { useAuthStore } from "../stores/storeAuth.js";
 
+const authStore = useAuthStore();
 const toast = useToast();
 const icon = ref(["fas", "lock"]);
 const name = ref("");
@@ -288,11 +296,13 @@ const city = ref("");
 const postalCode = ref("");
 const doorbell = ref("");
 const type = ref("password");
+let reactivateAccountLink = ref(false);
 let successMessage = ref("");
 let errorMessage = ref("");
 let errorsBackend = ref([]);
 
 const handleSignup = async () => {
+  const submittedEmail = email.value;
   errorsBackend.value = [];
   successMessage.value = "";
   errorMessage.value = "";
@@ -333,6 +343,12 @@ const handleSignup = async () => {
       console.log(errorsBackend.value);
     } else {
       errorsBackend.value = [{ field: "general", message: "Error" }];
+    }
+    if (error?.response?.data?.error?.code === "ACCOUNT_DISABLED") {
+      reactivateAccountLink.value = true;
+      authStore.login({
+        email: submittedEmail,
+      });
     }
   }
 };
@@ -492,6 +508,17 @@ input:focus {
   /* margin: 1em 0; */
   border: 0;
   transition: all 0.3s ease-in-out;
+}
+
+.password-reset-link {
+  font-weight: var(--fw-bold);
+  color: var(--clr-dark-light);
+  /* align-self: flex-start; */
+  cursor: pointer;
+}
+
+.password-reset-link:hover {
+  color: var(--color-primary);
 }
 
 .login-link:hover,

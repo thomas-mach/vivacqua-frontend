@@ -19,7 +19,7 @@ const routes = [
   { path: "/signup", component: Signup },
   { path: "/signin", component: Signin },
   { path: "/password-forgot", component: PasswordForgot },
-  { path: "/auto-lgoin", component: autoLogin },
+  { path: "/auto-login", component: autoLogin },
   { path: "/reactivate-user", component: ReactivateUser },
 
   {

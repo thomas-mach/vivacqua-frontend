@@ -300,7 +300,7 @@ input:focus {
 .password-reset-link:active,
 .create-account-link:hover,
 .create-account-link:active {
-  color: var(--color-accent);
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
