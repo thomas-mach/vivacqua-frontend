@@ -8,6 +8,9 @@ import PasswordReset from "../views/PasswordReset.vue";
 import autoLogin from "../components/autoLogin.vue";
 import ReactivateUser from "../components/ReactivateUser.vue";
 import UpdateMe from "../views/UpdateMe.vue";
+import AdminDashboard from "../views/Admin_Views/Dashboard.vue";
+import AdminProducts from "../views/Admin_Views/Products.vue";
+import AdminUsers from "../views/Admin_Views/Users.vue";
 // import DashBoard from "../views/DashBoard.vue";
 import Home from "../views/Home.vue";
 // import About from "../views/About.vue";
@@ -47,6 +50,28 @@ const routes = [
       {
         path: "update-me",
         component: UpdateMe,
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+
+  {
+    path: "/admin",
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "dashboard",
+        component: AdminDashboard,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "products",
+        component: AdminProducts,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "users",
+        component: AdminUsers,
         meta: { requiresAuth: true },
       },
     ],

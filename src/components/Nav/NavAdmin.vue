@@ -1,40 +1,48 @@
 <template>
   <ul>
     <li>
-      <button class="link btn" @click="ui.toggleMenu('admin')">
-        <font-awesome-icon class="icon" :icon="['fas', 'user-shield']" />Admin
-        Area
+      <button
+        class="link btn"
+        :class="{ 'btn--active': ui.activeMenu === 'admin' }"
+        @click="ui.toggleMenu('admin')"
+      >
+        <font-awesome-icon class="icon" :icon="['fas', 'user-shield']" />
+        Admin Area
       </button>
     </li>
+
     <transition name="slide">
       <!-- SUBMENU-->
       <ul v-if="ui.activeMenu === 'admin'" class="submenu">
         <li>
           <router-link
-            class="sublink"
             to="/admin/dashboard"
-            @click="(ui.showNav = false), ui.closeMenu()"
+            class="sublink"
+            active-class="sublink--active"
+            @click="ui.showNav = false"
           >
-            - Dashboard</router-link
-          >
+            - Dashboard
+          </router-link>
         </li>
         <li>
           <router-link
-            class="sublink"
             to="/admin/products"
-            @click="(ui.showNav = false), ui.closeMenu()"
+            class="sublink"
+            active-class="sublink--active"
+            @click="ui.showNav = false"
           >
-            - Prodotti</router-link
-          >
+            - Prodotti
+          </router-link>
         </li>
         <li>
           <router-link
-            class="sublink"
             to="/admin/users"
-            @click="(ui.showNav = false), ui.closeMenu()"
+            class="sublink"
+            active-class="sublink--active"
+            @click="ui.showNav = false"
           >
-            - Utenti</router-link
-          >
+            - Utenti
+          </router-link>
         </li>
       </ul>
     </transition>
@@ -43,9 +51,9 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useUIStore } from "../stores/ui";
-import { useAuthStore } from "../stores/storeAuth.js";
-import { logout } from "../api/authService.js";
+import { useUIStore } from "../../stores/ui.js";
+import { useAuthStore } from "../../stores/storeAuth.js";
+import { logout } from "../../api/authService.js";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -84,6 +92,12 @@ const authStore = useAuthStore();
   overflow: hidden;
 }
 
+.link:hover,
+.link:active,
+.sublink:hover,
+.sublink:active {
+  color: var(--color-primary);
+}
 .btn {
   background: none;
   border: none;
@@ -93,5 +107,11 @@ const authStore = useAuthStore();
   color: inherit;
   cursor: pointer;
   color: var(--color-gray-light);
+}
+
+.sublink--active,
+.btn--active {
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
 }
 </style>

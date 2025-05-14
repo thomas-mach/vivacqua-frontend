@@ -1,65 +1,75 @@
 <template>
   <div class="naw-user-wrapper">
     <ul>
-      <li>
+      <li v-if="!isLoggedIn">
         <router-link
-          v-if="!isLoggedIn"
-          class="link"
           to="/signup"
+          class="link"
+          active-class="link--active"
           @click="ui.showNav = false"
         >
           <font-awesome-icon class="icon" :icon="['fas', 'user-plus']" />
-          Registrati</router-link
-        >
+          Registrati
+        </router-link>
       </li>
-      <li>
+
+      <li v-if="!isLoggedIn">
         <router-link
-          v-if="!isLoggedIn"
-          class="link"
           to="/signin"
+          class="link"
+          active-class="link--active"
           @click="ui.showNav = false"
         >
           <font-awesome-icon
             class="icon"
             :icon="['fas', 'arrow-right-to-bracket']"
           />
-          Accedi</router-link
-        >
+          Accedi
+        </router-link>
       </li>
+
       <li v-if="isLoggedIn">
-        <button class="link btn" @click="ui.toggleMenu('settings')">
+        <button
+          class="link btn"
+          :class="{ 'btn--active': ui.activeMenu === 'settings' }"
+          @click="ui.toggleMenu('settings')"
+        >
           <font-awesome-icon class="icon" :icon="['fas', 'gear']" />
           Impostazioni
         </button>
       </li>
+
       <transition name="slide">
         <ul v-if="ui.activeMenu === 'settings'" class="submenu">
           <li>
             <router-link
-              class="sublink"
               to="/settings/password-update"
+              class="sublink"
+              active-class="sublink--active"
               @click="ui.showNav = false"
             >
-              - Cambio password</router-link
-            >
+              - Cambio password
+            </router-link>
           </li>
           <li>
             <router-link
-              class="sublink"
               to="/settings/update-me"
+              class="sublink"
+              active-class="sublink--active"
               @click="ui.showNav = false"
             >
-              - Modifica profilo</router-link
-            >
+              - Modifica profilo
+            </router-link>
           </li>
           <li>
             <router-link
-              class="sublink"
               to="/settings/delete-account"
+              class="sublink"
+              active-class="sublink--active"
               @click="ui.showNav = false"
             >
-              - Elimina Account</router-link
-            >
+              - Elimina Account
+            </router-link>
           </li>
         </ul>
       </transition>
@@ -69,11 +79,13 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useUIStore } from "../stores/ui.js";
-import { useAuthStore } from "../stores/storeAuth.js";
+import { useUIStore } from "../../stores/ui.js";
+import { useAuthStore } from "../../stores/storeAuth.js";
 import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
 const ui = useUIStore();
 const authStore = useAuthStore();
 let isLoggedIn = ref(false);
@@ -110,6 +122,13 @@ watch(
   font-size: 0.9rem;
 }
 
+.link:hover,
+.link:active,
+.sublink:hover,
+.sublink:active {
+  color: var(--color-primary);
+}
+
 .icon {
   width: 1em;
   height: 1em;
@@ -138,5 +157,12 @@ watch(
   color: inherit;
   cursor: pointer;
   color: var(--color-gray-light);
+}
+
+.link--active,
+.sublink--active,
+.btn--active {
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
 }
 </style>

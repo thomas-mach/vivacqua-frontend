@@ -36,9 +36,9 @@
 
 <script setup>
 import { ref, watch, onMounted } from "vue";
-import { useUIStore } from "../stores/ui.js";
-import { useAuthStore } from "../stores/storeAuth.js";
-import { logout } from "../api/authService.js";
+import { useUIStore } from "../../stores/ui.js";
+import { useAuthStore } from "../../stores/storeAuth.js";
+import { logout } from "../../api/authService.js";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -46,7 +46,7 @@ import Cookies from "js-cookie";
 import NavAdmin from "./NavAdmin.vue";
 import NavUser from "./NavUser.vue";
 import NavApp from "./NavApp.vue";
-import Logo from "./Logo.vue";
+import Logo from ".././Logo.vue";
 
 let isLoggedIn = ref(false);
 let isAdmin = ref(false);
@@ -149,6 +149,11 @@ onMounted(() => {
   font-size: var(--fs-body);
   margin: 0;
   padding: 0;
+}
+
+.link:hover,
+.link:active {
+  color: var(--color-primary);
 }
 
 .icon {
