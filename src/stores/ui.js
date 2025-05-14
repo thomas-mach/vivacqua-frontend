@@ -29,6 +29,10 @@ export const useUIStore = defineStore("ui", () => {
     activeMenu.value = menu; // Apre il menu specificato
   };
 
+  const toggleMenu = (menu) => {
+    activeMenu.value = activeMenu.value === menu ? null : menu;
+  };
+
   return {
     showNav,
     toggleNav,
@@ -37,6 +41,7 @@ export const useUIStore = defineStore("ui", () => {
     isSettingsOpen,
     activeMenu,
     toggleSettings,
+    toggleMenu,
     closeMenu,
     openMenu,
   };

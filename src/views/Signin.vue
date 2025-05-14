@@ -134,6 +134,7 @@ const hendelSignin = async () => {
       name: getMeResponse.data.user.name,
       surname: getMeResponse.data.user.surname,
       email: getMeResponse.data.user.email,
+      role: getMeResponse.data.user.role,
       street: getMeResponse.data.user.street,
       houseNumber: getMeResponse.data.user.houseNumber,
       city: getMeResponse.data.user.city,

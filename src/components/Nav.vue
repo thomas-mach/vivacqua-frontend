@@ -1,36 +1,14 @@
 <template>
-  <div class="wrapper">
-    <!-- LOGO -->
-    <div class="logo-wrapper">
-      <svg
-        class="logo"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="2 0 20 20"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M12 2C12 2 6 9 6 13a6 6 0 0012 0c0-4-6-11-6-11z" />
-      </svg>
-
-      <p class="logo-text">Vivacqua</p>
-    </div>
+  <nav class="wrapper">
+    <Logo />
     <div class="divider"></div>
+    <NavApp />
+    <NavAdmin v-if="isLoggedIn && isAdmin" />
+    <NavUser />
 
-    <!-- NAV -->
-    <div class="nav-wrapper">
-      <nav>
-        <ul>
-          <li>Home</li>
-          <li>About</li>
-        </ul>
-      </nav>
-    </div>
-    <div class="divider"></div>
     <!-- USER -->
     <div v-if="isLoggedIn" class="user-wrapper">
+      <div class="divider"></div>
       <div class="avatar-name-wrapper">
         <div class="avatar">{{ initials }}</div>
         <div class="name-email-wrapper">
@@ -42,123 +20,42 @@
       </div>
       <div class="divider"></div>
     </div>
-    <!-- USER NAV -->
-    <div class="naw-user-wrapper">
-      <!-- <div class="divider"></div> -->
-      <nav>
-        <ul>
-          <li>
-            <router-link
-              v-if="!isLoggedIn"
-              class="link"
-              to="/signup"
-              @click="ui.showNav = false"
-            >
-              <font-awesome-icon class="icon" :icon="['fas', 'user-plus']" />
-              Registrati</router-link
-            >
-          </li>
-          <li>
-            <router-link
-              v-if="!isLoggedIn"
-              class="link"
-              to="/signin"
-              @click="ui.showNav = false"
-            >
-              <font-awesome-icon
-                class="icon"
-                :icon="['fas', 'arrow-right-to-bracket']"
-              />
-              Accedi</router-link
-            >
-          </li>
-          <li v-if="isLoggedIn" class="link" @click="ui.toggleSettings">
-            <!-- <div class=""> -->
-            <font-awesome-icon
-              class="icon"
-              :icon="['fas', 'gear']"
-            />Impostazioni
-            <!-- </div> -->
-          </li>
-          <transition name="slide">
-            <!-- SUBMENU IMPOSTAZIONI -->
-            <ul v-if="ui.isSettingsOpen" class="submenu">
-              <li>
-                <router-link
-                  class="sublink"
-                  to="/settings/password-update"
-                  @click="(ui.showNav = false), ui.closeMenu()"
-                >
-                  - Cambio password</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  class="sublink"
-                  to="/settings/update-me"
-                  @click="(ui.showNav = false), ui.closeMenu()"
-                >
-                  - Modifica profilo</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  class="sublink"
-                  to="/settings/delete-account"
-                  @click="(ui.showNav = false), ui.closeMenu()"
-                >
-                  - Elimina Account</router-link
-                >
-              </li>
-            </ul>
-          </transition>
-
-          <li>
-            <button
-              v-if="isLoggedIn"
-              class="link btn"
-              @click.prevent="(ui.showNav = false), handleLogout()"
-            >
-              <font-awesome-icon
-                class="icon"
-                :icon="['fas', 'arrow-right-from-bracket']"
-              />Logout
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
+    <!-- LOGOUT BUTTON -->
+    <button
+      v-if="isLoggedIn"
+      class="link btn"
+      @click.prevent="(ui.showNav = false), handleLogout()"
+    >
+      <font-awesome-icon
+        class="icon"
+        :icon="['fas', 'arrow-right-from-bracket']"
+      />Logout
+    </button>
+  </nav>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { useUIStore } from "../stores/ui";
+import { ref, watch, onMounted } from "vue";
+import { useUIStore } from "../stores/ui.js";
 import { useAuthStore } from "../stores/storeAuth.js";
 import { logout } from "../api/authService.js";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
-
-// let isDesktop = ref(window.innerWidth > 768);
-// let isSettingsOpen = ref(false);
+import Cookies from "js-cookie";
+import NavAdmin from "./NavAdmin.vue";
+import NavUser from "./NavUser.vue";
+import NavApp from "./NavApp.vue";
+import Logo from "./Logo.vue";
 
 let isLoggedIn = ref(false);
+let isAdmin = ref(false);
 const toast = useToast();
 const user = ref(null);
+const initials = ref("");
 const router = useRouter();
 const ui = useUIStore();
-const initials = ref("");
 const authStore = useAuthStore();
-import Cookies from "js-cookie";
-
-const loadUserData = () => {
-  const storedUser = localStorage.getItem("user"); // Ottieni i dati dall'archivio
-  if (storedUser) {
-    user.value = JSON.parse(storedUser); // Trasforma in oggetto
-    isLoggedIn.value = user.value.isLoggedIn;
-  }
-};
 
 const getInitials = () => {
   const name = user.value?.name || "";
@@ -183,7 +80,6 @@ const handleLogout = async () => {
   }
 };
 
-// Carica i dati dell'utente quando il componente è montato
 watch(
   () => authStore.user,
   (newUser) => {
@@ -198,6 +94,17 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+watch(
+  () => authStore.user.role,
+  (newValue) => {
+    isAdmin.value = newValue === "admin" ? true : false;
+  }
+);
+
+onMounted(() => {
+  isAdmin.value = authStore.user?.role === "admin";
+});
 </script>
 
 <style scoped>
@@ -207,34 +114,11 @@ watch(
   flex-direction: column;
 }
 
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.nav-wrapper {
-  color: var(--color-gray-light);
-  flex-grow: 1;
-}
-
 .avatar-name-wrapper {
   display: flex;
   align-items: center;
   gap: 1em;
   margin-bottom: 0.5em;
-}
-
-.logo {
-  width: 60px;
-  height: 60px;
-  display: block;
-  color: var(--color-primary);
-}
-
-.logo-text {
-  font-size: 3rem;
-  font-weight: var(--fw-tiny);
-  color: var(--color-gray-light);
 }
 
 .divider {

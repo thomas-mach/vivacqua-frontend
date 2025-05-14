@@ -22,6 +22,7 @@ onMounted(async () => {
       isLoggedIn: true,
       name: response.data.user.name,
       surname: response.data.user.surname,
+      role: response.data.user.role,
       email: response.data.user.email,
       street: response.data.user.street,
       houseNumber: response.data.user.houseNumber,
