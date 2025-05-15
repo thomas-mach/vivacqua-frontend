@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL_AUTH = import.meta.env.VITE_API_URL;
+const API_URL_AUTH = import.meta.env.VITE_API_URL_AUTH;
 const API_URL_USER = import.meta.env.VITE_API_URL_USER;
 
 export const signup = async (userData) => {

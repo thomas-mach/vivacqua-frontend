@@ -1,13 +1,18 @@
 <template>
   <div class="nav-wrapper">
     <ul>
-      <li>Home</li>
-      <li>About</li>
+      <li>
+        <router-link to="/" class="sublink" active-class="sublink--active">
+          - Home
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { RouterLink } from "vue-router";
+</script>
 
 <style scoped>
 .nav-wrapper {
