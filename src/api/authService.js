@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL_AUTH = import.meta.env.VITE_API_URL;
 const API_URL_USER = import.meta.env.VITE_API_URL_USER;
 
 export const signup = async (userData) => {
   console.log("userData", userData);
   try {
-    const response = await axios.post(`${API_URL}/signup`, userData, {
+    const response = await axios.post(`${API_URL_AUTH}/signup`, userData, {
       withCredentials: true,
     });
     return response.data;
@@ -17,7 +17,7 @@ export const signup = async (userData) => {
 
 export const signin = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, userData, {
+    const response = await axios.post(`${API_URL_AUTH}/login`, userData, {
       withCredentials: true,
     });
     return response;
@@ -29,7 +29,7 @@ export const signin = async (userData) => {
 export const logout = async () => {
   try {
     const response = await axios.post(
-      `${API_URL}/logout`,
+      `${API_URL_AUTH}/logout`,
       {},
       {
         withCredentials: true,
@@ -53,7 +53,7 @@ export const forgotPassword = async (userData) => {
 export const resetPassword = async (userData) => {
   try {
     const response = await axios.patch(
-      `${API_URL}/resetPassword/${userData.token}`,
+      `${API_URL_AUTH}/resetPassword/${userData.token}`,
       userData,
       {
         withCredentials: true,
@@ -67,7 +67,7 @@ export const resetPassword = async (userData) => {
 
 export const resendEmail = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/resendEmail`, userData, {
+    const response = await axios.post(`${API_URL_AUTH}/resendEmail`, userData, {
       withCredentials: false,
     });
     return response.data;
@@ -79,7 +79,7 @@ export const resendEmail = async (userData) => {
 export const updatePassword = async (userData) => {
   try {
     const response = await axios.patch(
-      `${API_URL}/updateMyPassword`,
+      `${API_URL_AUTH}/updateMyPassword`,
       userData,
       {
         withCredentials: true,
@@ -97,7 +97,7 @@ export const updatePassword = async (userData) => {
 export const deleteAccount = async () => {
   try {
     const response = await axios.patch(
-      `${API_URL}/deleteMe`,
+      `${API_URL_AUTH}/deleteMe`,
       {},
       {
         withCredentials: true,
@@ -114,7 +114,7 @@ export const deleteAccount = async () => {
 
 export const getJWT = async () => {
   try {
-    const response = await axios.get(`${API_URL}/jwt`, {
+    const response = await axios.get(`${API_URL_AUTH}/jwt`, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -142,7 +142,7 @@ export const updateAvatar = async (userData) => {
 
 export const getMe = async () => {
   try {
-    const response = await axios.get(`${API_URL}/getMe`, {
+    const response = await axios.get(`${API_URL_AUTH}/getMe`, {
       withCredentials: true,
     });
     return response;
@@ -153,7 +153,7 @@ export const getMe = async () => {
 
 export const reactivateUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/reactivate`, userData, {
+    const response = await axios.post(`${API_URL_AUTH}/reactivate`, userData, {
       withCredentials: false,
     });
     return response.data;
@@ -164,7 +164,7 @@ export const reactivateUser = async (userData) => {
 
 export const updateMe = async (userData) => {
   try {
-    const response = await axios.patch(`${API_URL}/updateMe`, userData, {
+    const response = await axios.patch(`${API_URL_AUTH}/updateMe`, userData, {
       withCredentials: true,
     });
     return response.data;
