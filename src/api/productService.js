@@ -12,3 +12,14 @@ export const getAllProducts = async () => {
     throw error;
   }
 };
+
+export const updateProduct = async (productData) => {
+  try {
+    const response = await axios.post(`${API_URL}/products`, productData, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

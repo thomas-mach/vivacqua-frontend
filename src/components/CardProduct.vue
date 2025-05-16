@@ -3,17 +3,22 @@
     <!-- Badge per numero bottiglie -->
     <div class="badge">Cassa da {{ product.packSize }}</div>
 
-    <!-- Immagine -->
+    <!-- Immagine del prodotto -->
     <div class="image-wrapper" @click="mode === 'admin' && editImage()">
       <img
         class="product-image"
-        :src="getImageUrl(product.image)"
+        :src="
+          isBase64(editable.image)
+            ? editable.image
+            : getImageUrl(editable.image || product.image)
+        "
         alt="Prodotto"
       />
       <div v-if="mode === 'admin'" class="image-hover-badge">
         Clicca per cambiare foto
       </div>
     </div>
+    <!-- Input file nascosto per caricamento immagine -->
     <input
       ref="fileInput"
       type="file"
@@ -39,49 +44,49 @@
       <span>{{ product.category }}</span>
     </h3>
 
-    <!-- Descrizzione -->
+    <!-- Descrizione -->
     <div class="input-wrapper" v-if="mode === 'admin'">
-      Descrizzione: <input v-model="editable.description" />
+      Descrizione: <input v-model="editable.description" />
     </div>
     <h3 v-else class="product-description">{{ product.description }}</h3>
 
-    <!-- Dettagli quantità -->
+    <!-- Bottiglie per cassa -->
     <div class="input-wrapper" v-if="mode === 'admin'">
       Bottiglie per cassa:
       <input type="number" v-model="editable.packSize" />
     </div>
 
-    <!-- Tipo -->
+    <!-- Categoria -->
     <div class="input-wrapper" v-if="mode === 'admin'">
       Tipo:
-      <label>
-        <input type="radio" value="naturale" v-model="editable.category" />
-        Naturale
-      </label>
-      <label>
-        <input type="radio" value="frizzante" v-model="editable.category" />
-        Frizzante
-      </label>
-      <label>
-        <input type="radio" value="minerale" v-model="editable.category" />
-        Minerale
-      </label>
+      <label
+        ><input type="radio" value="naturale" v-model="editable.category" />
+        Naturale</label
+      >
+      <label
+        ><input type="radio" value="frizzante" v-model="editable.category" />
+        Frizzante</label
+      >
+      <label
+        ><input type="radio" value="minerale" v-model="editable.category" />
+        Minerale</label
+      >
     </div>
 
-    <!-- Disponibilita -->
+    <!-- Disponibilità -->
     <div class="input-wrapper" v-if="mode === 'admin'">
       Disponibile:
-      <div>
-        <label>
-          <input type="radio" :value="true" v-model="editable.available" /> Sì
-        </label>
-        <label>
-          <input type="radio" :value="false" v-model="editable.available" /> No
-        </label>
-      </div>
+      <label
+        ><input type="radio" :value="true" v-model="editable.available" />
+        Sì</label
+      >
+      <label
+        ><input type="radio" :value="false" v-model="editable.available" />
+        No</label
+      >
     </div>
 
-    <!-- Selettore quantità -->
+    <!-- Selettore quantità (solo in vista) -->
     <div class="quantity-wrapper" v-if="mode === 'view'">
       <p class="quantity-text">CASSE</p>
       <div class="btn-wrapper">
@@ -91,7 +96,7 @@
       </div>
     </div>
 
-    <!-- Pulsanti -->
+    <!-- Pulsanti di azione -->
     <div class="actions">
       <button
         class="btn-add"
@@ -100,7 +105,6 @@
       >
         Aggiungi al carrello
       </button>
-
       <div v-else class="action-btns">
         <button class="btn-add" @click="saveChanges">Salva</button>
         <button class="btn-add" @click="cancelChanges">Annulla</button>
@@ -113,73 +117,100 @@
 <script setup>
 import { ref, reactive, watch } from "vue";
 import { cloneDeep } from "lodash-es";
+import { resizeImage } from "../utils/resizeImage";
 
+// Props ricevute
 const props = defineProps({
   product: Object,
-  mode: { type: String, default: "view" }, // 'view' o 'admin'
+  mode: { type: String, default: "view" },
+  modelValue: { type: String, default: "" },
 });
 
-const fileInput = ref(null);
+const emit = defineEmits([
+  "update:modelValue",
+  "save",
+  "delete",
+  "add-to-cart",
+]);
+
+// --- Stato interno ---
 const quantity = ref(1);
-const editable = reactive(cloneDeep(props.product));
+const fileInput = ref(null);
+const editable = reactive(cloneDeep(props.product)); // copia modificabile del prodotto
+const previewImage = ref(props.modelValue); // opzionale, se vuoi gestire esternamente l'immagine
 
-const increase = () => quantity.value++;
-const decrease = () => (quantity.value = Math.max(1, quantity.value - 1));
-
-const editImage = () => {
-  fileInput.value?.click();
-};
-
-const saveChanges = () => {
-  // invia le modifiche al parent
-  emit("save", editable);
-};
-
-const cancelChanges = () => {
-  Object.assign(editable, props.product);
-};
-
-const emit = defineEmits(["buy"]);
-
-function handleAdd() {
-  emit("add", props.product);
+// --- Utility ---
+function isBase64(str) {
+  return typeof str === "string" && str.startsWith("data:image/");
 }
 
 function getImageUrl(imagePath) {
   return `http://localhost:3000${imagePath}`;
 }
 
-const onImageSelected = async (event) => {
+// --- Funzioni ---
+function increase() {
+  quantity.value++;
+}
+
+function decrease() {
+  quantity.value = Math.max(1, quantity.value - 1);
+}
+
+function editImage() {
+  fileInput.value?.click(); // simula click su input file
+}
+
+function saveChanges() {
+  emit("save", editable); // invia modifiche al parent
+}
+
+function cancelChanges() {
+  Object.assign(editable, props.product); // ripristina valori originali
+}
+
+// Gestione immagine caricata
+async function onImageSelected(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Opzionale: preview immediata
-  const reader = new FileReader();
-  reader.onload = () => {
-    editable.image = reader.result; // preview base64 (opzionale)
-  };
-  reader.readAsDataURL(file);
+  const resized = await resizeImage(file, 1024, 1024); // chiama resize
+  editable.image = resized; // preview con immagine ridotta
 
-  // Invio al backend (esempio con fetch + FormData)
-  const formData = new FormData();
-  formData.append("image", file);
+  // Mostra preview immediata
+  // const reader = new FileReader();
+  // reader.onload = () => {
+  //   editable.image = reader.result;
+  // };
+  // reader.readAsDataURL(file);
 
-  try {
-    const response = await fetch("http://localhost:3000/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await response.json();
-    editable.image = data.imagePath; // aggiorna il percorso immagine nel prodotto
-  } catch (err) {
-    console.error("Errore upload immagine:", err);
-  }
-};
+  // Caricamento backend (opzionale)
+  // const formData = new FormData();
+  // formData.append("image", file);
+  // try {
+  //   const res = await fetch("http://localhost:3000/api/upload", {
+  //     method: "POST",
+  //     body: formData,
+  //   });
+  //   const data = await res.json();
+  //   editable.image = data.imagePath;
+  // } catch (err) {
+  //   console.error("Errore upload:", err);
+  // }
+}
 
+// --- Watch ---
 watch(
   () => props.product,
   (newProduct) => {
-    editable.value = cloneDeep(newProduct); // o cloneDeep(newProduct)
+    Object.assign(editable, cloneDeep(newProduct));
+  }
+);
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    previewImage.value = newVal;
   }
 );
 </script>
@@ -192,12 +223,13 @@ watch(
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
-  max-width: 400px;
+  width: 400px;
   text-align: center;
 }
 .product-image {
-  width: 100%;
-  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover; /* o "cover" se vuoi che riempia tutto */
   border-radius: 4px;
 }
 .product-title {
@@ -343,6 +375,14 @@ watch(
 .image-wrapper {
   position: relative;
   cursor: pointer;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-bottom: 1em;
 }
 
 .image-hover-badge {
