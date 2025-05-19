@@ -249,7 +249,7 @@
           <div class="input-wraper button">
             <button class="btn" type="submit">REGISTRATI</button>
             <div class="error-message-placeholder">
-              <p class="error-message" v-if="getError()">
+              <p class="error-message" v-if="getError('postalCode')">
                 {{ getError("postalCode") }}
               </p>
             </div>

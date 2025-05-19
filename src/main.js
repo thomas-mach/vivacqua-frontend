@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { FontAwesomeIcon } from "./plugins/icons";
 import Toast from "vue-toastification";
 import router from "./router/router";
@@ -20,8 +21,11 @@ const toastOptions = {
   pauseOnHover: true,
 };
 
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+
 app.use(Toast, toastOptions);
-app.use(createPinia());
+app.use(pinia);
 app.use(router);
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.mount("#app");

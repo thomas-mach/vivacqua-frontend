@@ -15,6 +15,7 @@ import AdminUsers from "../views/Admin_Views/Users.vue";
 import Home from "../views/Home.vue";
 // import About from "../views/About.vue";
 import DeleteAccount from "../views/DeleteAccount.vue";
+import ProductsCreate from "../views/Admin_Views/ProductsCreate.vue";
 
 const routes = [
   { path: "/", component: Home },
@@ -72,6 +73,11 @@ const routes = [
       {
         path: "users",
         component: AdminUsers,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "products-create",
+        component: ProductsCreate,
         meta: { requiresAuth: true },
       },
     ],

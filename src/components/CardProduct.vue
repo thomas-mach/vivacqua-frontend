@@ -2,6 +2,7 @@
   <div class="product-card">
     <!-- Badge per numero bottiglie -->
     <div class="badge">Cassa da {{ product.packSize }}</div>
+    <div v-if="!product.available" class="badge-available">Non disponibile</div>
 
     <!-- Immagine del prodotto -->
     <div class="image-wrapper" @click="mode === 'admin' && editImage()">
@@ -27,63 +28,89 @@
       style="display: none"
     />
 
-    <!-- Prezzo -->
-    <div class="input-wrapper" v-if="mode === 'admin'">
-      Prezzo per cassa: <input type="number" v-model="editable.price" />
-    </div>
-    <div v-else class="price">
-      Prezzo: {{ product.price }}€ / cassa da {{ product.packSize }} bottiglie
-    </div>
-
     <!-- Nome -->
     <div class="input-wrapper" v-if="mode === 'admin'">
-      Nome: <input v-model="editable.name" />
+      <label for="name" class="label-input">Nome: </label>
+      <input id="name" type="text" v-model="editable.name" />
     </div>
     <h3 v-else class="product-name">
       {{ product.name }} {{ product.format }}
       <span>{{ product.category }}</span>
     </h3>
 
+    <!-- Prezzo -->
+    <div class="input-wrapper" v-if="mode === 'admin'">
+      <label for="price" class="label-input">Prezzo per cassa: </label>
+      <input id="price" type="number" v-model="editable.price" />
+    </div>
+    <div v-else class="price">
+      Prezzo: {{ product.price }}€ / cassa da {{ product.packSize }} bottiglie
+    </div>
+
     <!-- Descrizione -->
     <div class="input-wrapper" v-if="mode === 'admin'">
-      Descrizione: <input v-model="editable.description" />
+      <label for="description" class="label-input">Descrizione </label>
+      <textarea id="description" v-model="editable.description" />
     </div>
-    <h3 v-else class="product-description">{{ product.description }}</h3>
+    <div v-else class="product-description">{{ product.description }}</div>
 
     <!-- Bottiglie per cassa -->
     <div class="input-wrapper" v-if="mode === 'admin'">
-      Bottiglie per cassa:
-      <input type="number" v-model="editable.packSize" />
+      <label for="size" class="label-input">Bottiglie per cassa: </label>
+      <input id="size" type="number" v-model="editable.packSize" />
     </div>
 
     <!-- Categoria -->
-    <div class="input-wrapper" v-if="mode === 'admin'">
-      Tipo:
-      <label
-        ><input type="radio" value="naturale" v-model="editable.category" />
-        Naturale</label
-      >
-      <label
-        ><input type="radio" value="frizzante" v-model="editable.category" />
-        Frizzante</label
-      >
-      <label
-        ><input type="radio" value="minerale" v-model="editable.category" />
-        Minerale</label
-      >
+    <div class="input-radio-wrapper" v-if="mode === 'admin'">
+      <div>Tipo:</div>
+      <div class="wrapper">
+        <div class="radio-wrapper">
+          <input type="radio" value="naturale" v-model="editable.category" />
+          <label>Naturale</label>
+        </div>
+
+        <div class="radio-wrapper">
+          <input type="radio" value="frizzante" v-model="editable.category" />
+          <label>Frizzante</label>
+        </div>
+
+        <div class="radio-wrapper">
+          <input type="radio" value="minerale" v-model="editable.category" />
+          <label>Minerale</label>
+        </div>
+      </div>
     </div>
 
     <!-- Disponibilità -->
-    <div class="input-wrapper" v-if="mode === 'admin'">
-      Disponibile:
-      <label
-        ><input type="radio" :value="true" v-model="editable.available" />
-        Sì</label
-      >
-      <label
-        ><input type="radio" :value="false" v-model="editable.available" />
-        No</label
-      >
+    <div class="input-radio-wrapper" v-if="mode === 'admin'">
+      <div>Disponibile:</div>
+      <div class="wrapper">
+        <div class="radio-wrapper">
+          <input type="radio" :value="true" v-model="editable.available" />
+          <label>Si</label>
+        </div>
+
+        <div class="radio-wrapper">
+          <input type="radio" :value="false" v-model="editable.available" />
+          <label>No</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attivo -->
+    <div class="input-radio-wrapper" v-if="mode === 'admin'">
+      <div>Attivo:</div>
+      <div class="wrapper">
+        <div class="radio-wrapper">
+          <input type="radio" :value="true" v-model="editable.active" />
+          <label>Si</label>
+        </div>
+
+        <div class="radio-wrapper">
+          <input type="radio" :value="false" v-model="editable.active" />
+          <label>No</label>
+        </div>
+      </div>
     </div>
 
     <!-- Selettore quantità (solo in vista) -->
@@ -99,16 +126,16 @@
     <!-- Pulsanti di azione -->
     <div class="actions">
       <button
-        class="btn-add"
+        class="btn"
         v-if="mode === 'view'"
         @click="$emit('add-to-cart', quantity)"
       >
         Aggiungi al carrello
       </button>
       <div v-else class="action-btns">
-        <button class="btn-add" @click="saveChanges">Salva</button>
-        <button class="btn-add" @click="cancelChanges">Annulla</button>
-        <button class="btn-add" @click="$emit('delete')">Elimina</button>
+        <button class="btn" @click="saveChanges">Salva</button>
+        <button class="btn" @click="cancelChanges">Annulla</button>
+        <button class="btn" @click="$emit('delete')">Elimina</button>
       </div>
     </div>
   </div>
@@ -263,6 +290,17 @@ watch(
   z-index: 1000;
 }
 
+.badge-available {
+  position: absolute;
+  top: 1.25em;
+  right: 0;
+  background-color: var(--clr-error);
+  color: var(--color-white);
+  padding: 0.25em 0.75em;
+  font-size: var(--fs-small);
+  z-index: 1000;
+}
+
 .price {
   align-self: flex-start;
   font-size: var(--fs-body);
@@ -276,9 +314,13 @@ watch(
 }
 
 .product-description {
+  height: 100px;
+  overflow-y: auto;
   align-self: flex-start;
   font-size: var(--fs-small);
   font-weight: var(--fw-tiny);
+  text-align: left;
+  margin: 1em 0 1em;
 }
 
 .btn-quantity {
@@ -345,7 +387,7 @@ watch(
   transition: background-color 0.3s;
 }
 
-.btn-add {
+.btn {
   border: none;
   border-radius: 50px;
   padding: 1em 1.5em;
@@ -362,11 +404,17 @@ watch(
   transition: background-color 0.3s;
 }
 
+.btn:hover,
+.btn:active {
+  background-color: var(--color-primary);
+  box-shadow: 0 0 20px #13dbf6;
+}
+
 .product-name span {
   font-size: var(--fs-body);
 }
 
-.input-wrapper {
+input-label {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5em;
@@ -402,5 +450,58 @@ watch(
 
 .image-wrapper:hover .image-hover-badge {
   opacity: 1;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 1em 1em 1em 2em;
+  margin-bottom: 1em;
+  border: none;
+  border-radius: 50px;
+  color: var(--color-gray);
+  letter-spacing: 1.3px;
+  border: 1px solid var(--color-gray);
+  font-size: var(--fs-body);
+  resize: none;
+}
+
+.label-input {
+  font-size: var(--fs-small);
+  position: absolute;
+  background-color: var(--color-white);
+  right: 30px;
+  top: -9px;
+  padding: 0 0.5em;
+}
+
+.input-radio-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+}
+
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2em;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+input[type="radio"] {
+  margin: 0;
 }
 </style>

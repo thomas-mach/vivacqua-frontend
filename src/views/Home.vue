@@ -1,7 +1,7 @@
 <template>
   <div class="product-list">
     <ProductCard
-      v-for="product in products"
+      v-for="product in productStore.allProducts"
       :key="product._id"
       :product="product"
     />
@@ -9,27 +9,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import ProductCard from "../components/CardProduct.vue";
-import { getAllProducts } from "../api/productService";
+import { useProductStore } from "../stores/storeProducts";
 
-const products = ref([]);
-console.log(products);
-const handleGetAllProducts = async () => {
-  try {
-    const response = await getAllProducts();
-    products.value = response.data.products;
-    console.log("Products", products.value);
-  } catch (error) {
-    console.log(error);
-  }
-};
+const productStore = useProductStore();
+// const products = computed(() => productStore.products);
+const { fetchPublicProducts } = useProductStore();
 
-onMounted(() => handleGetAllProducts());
+onMounted(async () => {
+  fetchPublicProducts();
+});
 
-function handleAdd(product) {
-  emit("add", product);
-}
+// function handleAdd(product) {
+//   emit("add", product);
+// }
 </script>
 
 <style scoped>

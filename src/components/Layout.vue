@@ -71,6 +71,8 @@ const updateScreenSize = () => {
     "footer";
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
+  min-width: 100vw;
+  /* border: 1px solid red; */
 }
 
 .mobile-nav {
@@ -79,7 +81,7 @@ const updateScreenSize = () => {
   left: 0;
   height: 100vh;
   background-color: var(--color-accent);
-  z-index: 1000;
+  z-index: 5000;
   padding: 1rem;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
@@ -91,12 +93,13 @@ const updateScreenSize = () => {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 999;
+  z-index: 10000;
 }
 
 .header {
   transition: box-shadow 0.3s ease;
 }
+
 .header.scrolled {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
@@ -107,7 +110,7 @@ const updateScreenSize = () => {
   position: sticky;
   top: 0;
   padding: 0.75rem;
-  z-index: 10;
+  z-index: 2000;
   background-color: var(--color-white);
 }
 
@@ -116,6 +119,8 @@ const updateScreenSize = () => {
   grid-area: main;
   overflow-y: auto;
   padding: 1rem;
+  width: 100%;
+  /* border: 3px solid green; */
 }
 
 /* Footer */

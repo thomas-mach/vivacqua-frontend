@@ -43,7 +43,10 @@ export const logout = async () => {
 
 export const forgotPassword = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/forgotPassword`, userData);
+    const response = await axios.post(
+      `${API_URL_AUTH}/forgotPassword`,
+      userData
+    );
     return response.data;
   } catch (error) {
     throw error;
