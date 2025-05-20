@@ -126,25 +126,39 @@
     <!-- Pulsanti di azione -->
     <div class="actions">
       <button
-        class="btn"
+        class="btn btn-action"
         v-if="mode === 'view'"
         @click="$emit('add-to-cart', quantity)"
       >
         Aggiungi al carrello
       </button>
+
       <div v-else class="action-btns">
-        <button class="btn" @click="saveChanges">Salva</button>
-        <button class="btn" @click="cancelChanges">Annulla</button>
-        <button class="btn" @click="$emit('delete')">Elimina</button>
+        <button
+          class="btn btn-action"
+          @click="saveChanges"
+          :disabled="!isModified"
+        >
+          Salva
+        </button>
+        <button
+          class="btn btn-action"
+          @click="cancelChanges"
+          :disabled="!isModified"
+        >
+          Annulla
+        </button>
+        <button class="btn btn-delete" @click="deleteProduct">Elimina</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { cloneDeep } from "lodash-es";
 import { resizeImage } from "../utils/resizeImage";
+import { isEqual } from "lodash-es";
 
 // Props ricevute
 const props = defineProps({
@@ -190,6 +204,10 @@ function editImage() {
 
 function saveChanges() {
   emit("save", editable); // invia modifiche al parent
+}
+
+function deleteProduct() {
+  emit("delete", editable); // invia modifiche al parent
 }
 
 function cancelChanges() {
@@ -240,9 +258,17 @@ watch(
     previewImage.value = newVal;
   }
 );
+// --- Computed ---
+const isModified = computed(() => {
+  return !isEqual(editable, props.product);
+});
 </script>
 
 <style scoped>
+.test {
+  background-color: red;
+}
+
 .product-card {
   position: relative;
   display: flex;
@@ -391,8 +417,6 @@ watch(
   border: none;
   border-radius: 50px;
   padding: 1em 1.5em;
-  background-color: var(--color-primary);
-  color: white;
   border: none;
   display: flex; /* Per centrare contenuto */
   align-items: center;
@@ -404,14 +428,43 @@ watch(
   transition: background-color 0.3s;
 }
 
-.btn:hover,
-.btn:active {
+.btn-action {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-delete {
+  background-color: var(--clr-error);
+  color: white;
+}
+
+.btn-action:hover,
+.btn-action:active {
   background-color: var(--color-primary);
   box-shadow: 0 0 20px #13dbf6;
 }
 
+.btn-delete:hover,
+.btn-delete:active {
+  background-color: var(--clr-error);
+  box-shadow: 0 0 20px #ff2a2a;
+}
+
 .product-name span {
   font-size: var(--fs-body);
+}
+
+button:disabled {
+  background-color: var(--color-gray);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+button:disabled:hover {
+  background-color: var(--color-gray);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: 0 0 20px var(--color-white);
 }
 
 input-label {

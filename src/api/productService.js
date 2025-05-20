@@ -54,3 +54,18 @@ export const updateProduct = async (productData) => {
     throw error;
   }
 };
+
+export const deleteProduct = async (productData) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/products/${productData._id}`,
+
+      {
+        withCredentials: true,
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

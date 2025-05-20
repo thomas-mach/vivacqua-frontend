@@ -5,34 +5,13 @@ import {
   getAllProducts,
   getProducts,
   updateProduct,
+  deleteProduct,
 } from "../api/productService";
 
 export const useProductStore = defineStore("products", () => {
   const allProducts = ref([]);
   const allAdminProducts = ref([]);
   const response = ref([]);
-  //   const auth = useAuthStore();
-
-  // funzione per ottenere tutti i prodotti
-  //   const fetchProducts = async () => {
-  //     try {
-  //       if (!auth.user.isLoggedIn) {
-  //         response.value = await getProducts();
-  //         products.value = response.value.data.products;
-  //         return;
-  //       }
-
-  //       if (auth.user?.role === "admin") {
-  //         response.value = await getAllProducts();
-  //       } else {
-  //         response.value = await getProducts();
-  //       }
-  //       products.value = response.value.data.products;
-  //       console.log(products.value);
-  //     } catch (error) {
-  //       console.log("Errore nel caricamento prodotti:", error);
-  //     }
-  //   };
 
   const fetchPublicProducts = async () => {
     try {
@@ -61,11 +40,21 @@ export const useProductStore = defineStore("products", () => {
     }
   };
 
+  const deleteProductDB = async (productData) => {
+    try {
+      await deleteProduct(productData);
+      await fetchAdminProducts();
+    } catch (error) {
+      console.error("Errore", error);
+    }
+  };
+
   return {
     allProducts,
     allAdminProducts,
     fetchPublicProducts,
     fetchAdminProducts,
+    deleteProductDB,
     update,
   };
 });

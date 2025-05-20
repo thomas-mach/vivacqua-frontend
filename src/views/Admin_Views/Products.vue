@@ -11,6 +11,7 @@
         :mode="'admin'"
         v-model="previewImages[product._id]"
         @save="handleUpdateProduct"
+        @delete="handeleDeleteProduct"
       />
     </div>
   </div>
@@ -24,13 +25,17 @@ import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 const toast = useToast();
-const { fetchAdminProducts, update } = useProductStore();
+const { fetchAdminProducts, update, deleteProductDB } = useProductStore();
 
 const productStore = useProductStore();
 
 const handleUpdateProduct = async (productData) => {
   await update(productData);
   toast.success("Modifiche salvate.", { timeout: 2000 });
+};
+
+const handeleDeleteProduct = async (productData) => {
+  await deleteProductDB(productData);
 };
 
 const previewImages = reactive({});
