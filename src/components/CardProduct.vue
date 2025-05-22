@@ -125,11 +125,7 @@
 
     <!-- Pulsanti di azione -->
     <div class="actions">
-      <button
-        class="btn btn-action"
-        v-if="mode === 'view'"
-        @click="$emit('add-to-cart', quantity)"
-      >
+      <button class="btn btn-action" v-if="mode === 'view'" @click="addToCart">
         Aggiungi al carrello
       </button>
 
@@ -148,7 +144,14 @@
         >
           Annulla
         </button>
-        <button class="btn btn-delete" @click="deleteProduct">Elimina</button>
+        <button class="btn btn-delete" @click="openModal = true">
+          Elimina
+        </button>
+        <ModalConfirm
+          v-if="openModal"
+          @confirm="deleteProduct"
+          @cancel="openModal = false"
+        />
       </div>
     </div>
   </div>
@@ -156,9 +159,9 @@
 
 <script setup>
 import { ref, reactive, watch, computed } from "vue";
-import { cloneDeep } from "lodash-es";
+import { cloneDeep, isEqual } from "lodash-es";
 import { resizeImage } from "../utils/resizeImage";
-import { isEqual } from "lodash-es";
+import ModalConfirm from "../components/Modals/modalConfirm.vue";
 
 // Props ricevute
 const props = defineProps({
@@ -175,6 +178,7 @@ const emit = defineEmits([
 ]);
 
 // --- Stato interno ---
+const openModal = ref(false);
 const quantity = ref(1);
 const fileInput = ref(null);
 const editable = reactive(cloneDeep(props.product)); // copia modificabile del prodotto
@@ -212,6 +216,10 @@ function deleteProduct() {
 
 function cancelChanges() {
   Object.assign(editable, props.product); // ripristina valori originali
+}
+
+function addToCart() {
+  emit("add-to-cart", props.product, quantity.value);
 }
 
 // Gestione immagine caricata
@@ -273,7 +281,7 @@ const isModified = computed(() => {
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-gray-mid);
   border-radius: 8px;
   padding: 1rem;
   width: 400px;

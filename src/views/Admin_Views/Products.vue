@@ -36,6 +36,7 @@ const handleUpdateProduct = async (productData) => {
 
 const handeleDeleteProduct = async (productData) => {
   await deleteProductDB(productData);
+  toast.success("Prodotto eliminato!", { timeout: 2000 });
 };
 
 const previewImages = reactive({});

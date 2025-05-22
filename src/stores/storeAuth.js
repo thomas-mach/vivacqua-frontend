@@ -1,33 +1,28 @@
+// stores/authStore.js
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+
+// Stato iniziale separato
+const defaultUser = { isLoggedIn: false };
 
 export const useAuthStore = defineStore(
   "auth",
   () => {
-    const user = ref(
-      JSON.parse(localStorage.getItem("user")) || { isLoggedIn: false }
-    );
+    const user = ref({ ...defaultUser });
 
     const isLoggedIn = computed(() => user.value?.isLoggedIn || false);
 
     function login(userData) {
-      user.value = userData;
-      localStorage.setItem("user", JSON.stringify(userData));
-    }
-
-    function setUserId(id) {
-      if (user.value) {
-        user.value = { ...user.value, id };
-        localStorage.setItem("user", JSON.stringify(user.value));
-      }
+      user.value = { ...userData, isLoggedIn: true };
     }
 
     function logout() {
-      user.value = { isLoggedIn: false };
-      localStorage.removeItem("user");
+      user.value = { ...defaultUser }; // torni allo stato "non loggato"
     }
 
-    return { user, isLoggedIn, login, logout, setUserId };
+    return { user, isLoggedIn, login, logout };
   },
-  { persist: true }
+  {
+    persist: true,
+  }
 );

@@ -38,10 +38,11 @@
 import { ref, watch, onMounted } from "vue";
 import { useUIStore } from "../../stores/ui.js";
 import { useAuthStore } from "../../stores/storeAuth.js";
-import { logout } from "../../api/authService.js";
+import { useCartStore } from "../../stores/storeCart";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { logout } from "../../api/authService.js";
 import Cookies from "js-cookie";
 import NavAdmin from "./NavAdmin.vue";
 import NavUser from "./NavUser.vue";
@@ -50,6 +51,7 @@ import Logo from ".././Logo.vue";
 
 let isLoggedIn = ref(false);
 let isAdmin = ref(false);
+const cart = useCartStore();
 const toast = useToast();
 const user = ref(null);
 const initials = ref("");
@@ -72,6 +74,7 @@ const handleLogout = async () => {
     Cookies.remove("jwt", { path: "/" });
     authStore.logout();
     ui.closeMenu();
+    cart.clearCart();
     toast.success("Hai effettuato il logout.", { timeout: 3000 });
     await router.push("/");
     console.log(response);

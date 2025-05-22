@@ -11,14 +11,18 @@ import UpdateMe from "../views/UpdateMe.vue";
 import AdminDashboard from "../views/Admin_Views/Dashboard.vue";
 import AdminProducts from "../views/Admin_Views/Products.vue";
 import AdminUsers from "../views/Admin_Views/Users.vue";
+import Cart from "../components/Cart.vue";
+import OrderSuccess from "../views/OrderSuccess.vue";
 // import DashBoard from "../views/DashBoard.vue";
 import Home from "../views/Home.vue";
 // import About from "../views/About.vue";
 import DeleteAccount from "../views/DeleteAccount.vue";
 import ProductsCreate from "../views/Admin_Views/ProductsCreate.vue";
+import Checkout from "../views/Checkout.vue";
 
 const routes = [
   { path: "/", component: Home },
+  { path: "/cart", component: Cart },
   // { path: "/contact", component: Contact },
   // { path: "/about", component: About },
   { path: "/signup", component: Signup },
@@ -26,6 +30,8 @@ const routes = [
   { path: "/password-forgot", component: PasswordForgot },
   { path: "/auto-login", component: autoLogin },
   { path: "/reactivate-user", component: ReactivateUser },
+  { path: "/checkout", component: Checkout },
+  { path: "/order-success", component: OrderSuccess },
 
   {
     path: "/reset-password",

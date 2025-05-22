@@ -15,6 +15,15 @@
       </svg>
     </router-link>
     <div class="btn-wrapper">
+      <div class="icon-badge-wrapper">
+        <router-link class="cart-icon" to="/cart">
+          <font-awesome-icon :icon="['fas', 'cart-shopping']" />
+        </router-link>
+        <p v-if="cart.itemCount > 0" class="item-count-badge">
+          {{ cart.itemCount }}
+        </p>
+      </div>
+
       <button class="btn user-btn" @click="ui.toggleUserNav">
         <font-awesome-icon
           v-if="!isLoggedIn"
@@ -81,9 +90,11 @@ import { useUIStore } from "../stores/ui";
 import { useAuthStore } from "../stores/storeAuth.js";
 import { logout } from "../api/authService.js";
 import { useRouter } from "vue-router";
+import { useCartStore } from "../stores/storeCart";
 
 let isDesktop = ref(window.innerWidth > 768);
 let isLoggedIn = ref(false);
+const cart = useCartStore();
 const user = ref(null);
 const router = useRouter();
 const ui = useUIStore();
@@ -111,6 +122,7 @@ const handeleLogout = async () => {
     const response = await logout();
     Cookies.remove("jwt", { path: "/" });
     authStore.logout();
+    cart.clearCart();
     router.push("/");
     console.log(response);
   } catch (error) {
@@ -296,5 +308,30 @@ watch(
 
 .nav-open .hamburger::after {
   opacity: 0;
+}
+
+.cart-icon {
+  color: var(--color-gray);
+  font-size: var(--fs-medium);
+}
+
+.icon-badge-wrapper {
+  position: relative;
+}
+
+.item-count-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--clr-error);
+  font-size: var(--fs-small);
+  color: var(--color-white);
+  padding: 10px;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
 }
 </style>

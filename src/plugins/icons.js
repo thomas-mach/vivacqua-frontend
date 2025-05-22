@@ -20,6 +20,8 @@ import {
   faBell,
   faGear,
   faUserShield,
+  faHouse,
+  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
@@ -45,7 +47,9 @@ library.add(
   faHashtag,
   faBell,
   faGear,
-  faUserShield
+  faUserShield,
+  faHouse,
+  faCartShopping
 );
 
 // Esporta l'icona per registrarla nel main.js

@@ -145,7 +145,7 @@ const hendelSignin = async () => {
     console.log("signin", response);
     email.value = "";
     password.value = "";
-    toast.success("Accesso effettuato con successo!", { timeout: 3000 });
+    toast.success("Accesso effettuato con successo!", { timeout: 1500 });
     router.push("/");
     authStore.login(userData);
     console.log(localStorage.getItem("user"));
