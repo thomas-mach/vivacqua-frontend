@@ -149,7 +149,12 @@
         </button>
         <ModalConfirm
           v-if="openModal"
-          @confirm="deleteProduct"
+          @confirm="
+            {
+              deleteProduct();
+              openModal = false;
+            }
+          "
           @cancel="openModal = false"
         />
       </div>
@@ -190,6 +195,13 @@ function isBase64(str) {
 }
 
 function getImageUrl(imagePath) {
+  if (!imagePath) return "";
+
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    console.log(imagePath);
+    return imagePath;
+  }
+
   return `http://localhost:3000${imagePath}`;
 }
 

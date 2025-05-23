@@ -169,7 +169,7 @@ const passwordConfirmValidate = () => {
 <style scoped>
 .container {
   margin: 0 auto;
-  width: 90%;
+  /* width: 90%; */
   max-width: 600px;
   height: 100%;
   display: grid;

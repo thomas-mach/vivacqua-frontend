@@ -40,7 +40,7 @@ const handeleDeleteAccount = async () => {
 
 <style scoped>
 .wraper {
-  width: 90%;
+  /* width: 90%; */
   max-width: 1224px;
   margin: 0 auto;
 }

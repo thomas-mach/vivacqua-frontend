@@ -2,7 +2,7 @@
   <div class="success">
     <h1>Grazie per il tuo ordine! 🎉</h1>
     <p>Il tuo pagamento è andato a buon fine.</p>
-    <router-link to="/">Torna alla Home</router-link>
+    <router-link class="link" to="/"> <-- Torna alla Home</router-link>
   </div>
 </template>
 
@@ -10,5 +10,13 @@
 .success {
   text-align: center;
   margin-top: 50px;
+}
+
+p {
+  margin-bottom: 2em;
+}
+
+.link {
+  text-decoration: none;
 }
 </style>

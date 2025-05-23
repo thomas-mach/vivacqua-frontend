@@ -7,6 +7,7 @@
       >
         +
       </button>
+
       <p class="quantity">{{ product.quantity }}</p>
       <button
         class="btn-quantity btn-quantity-decrease"
@@ -18,7 +19,7 @@
     <div class="image-wrapper">
       <img
         class="product-image"
-        :src="`${IMAGES_URL}${product.image}`"
+        :src="product.image || `${IMAGES_URL}${product.image}`"
         alt="Prodotto"
       />
     </div>

@@ -5,7 +5,9 @@
       <div class="image-wrapper">
         <img
           class="product-image"
-          :src="`${IMAGES_URL}${product.productId.image}`"
+          :src="
+            product.productId.image || `${IMAGES_URL}${product.productId.image}`
+          "
           alt="product"
         />
       </div>
@@ -21,8 +23,8 @@
     <div class="total-amount">Totale da pagare {{ order.totalAmount }}€</div>
 
     <div class="card-wrapper">
-      <img src="../../public/visa.png" alt="visa-card" />
-      <img src="../../public/shopping.png" alt="master-card" />
+      <img src="/visa.png" alt="visa-card" />
+      <img src="/shopping.png" alt="master-card" />
     </div>
 
     <div v-if="clientSecret" class="checkout-wrapper">

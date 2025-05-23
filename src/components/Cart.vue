@@ -6,9 +6,11 @@
         <p v-if="cart.items.length > 0">{{ cart.itemCount }} Pezzi</p>
       </div>
       <div class="divider"></div>
-      <p v-if="cart.items.length === 0">Carello e vouto</p>
+      <p v-if="cart.items.length === 0">Carello è vouto.</p>
       <div class="total-wrapper">
-        <p class="total-amount">Totale Carello: {{ cart.totalPrice }}€</p>
+        <p v-if="cart.items.length > 0" class="total-amount">
+          Totale Carello: {{ cart.totalPrice }}€
+        </p>
         <button
           v-if="cart.items.length > 0"
           class="btn"
