@@ -2,14 +2,14 @@
   <div class="wrapper-cart">
     <section class="items">
       <div class="header">
-        <h3>Carello</h3>
+        <h3>Carrello</h3>
         <p v-if="cart.items.length > 0">{{ cart.itemCount }} Pezzi</p>
       </div>
       <div class="divider"></div>
-      <p v-if="cart.items.length === 0">Carello è vouto.</p>
+      <p v-if="cart.items.length === 0">Carrello è vouto.</p>
       <div class="total-wrapper">
         <p v-if="cart.items.length > 0" class="total-amount">
-          Totale Carello: {{ cart.totalPrice }}€
+          Totale Carrello: {{ cart.totalPrice }}€
         </p>
         <button
           v-if="cart.items.length > 0"
@@ -194,7 +194,7 @@ button:disabled:hover {
   font-weight: var(--fw-reg);
 }
 
-@media (max-width: 380px) {
+@media (max-width: 400px) {
   .btn {
     margin-top: 0.5em;
   }

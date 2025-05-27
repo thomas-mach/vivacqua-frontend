@@ -5,19 +5,19 @@
       <div class="image-wrapper">
         <img
           class="product-image"
-          :src="
-            product.productId.image || `${IMAGES_URL}${product.productId.image}`
-          "
+          :src="`${IMAGES_URL}${product.productId.image}`"
           alt="product"
         />
       </div>
       <div class="description-wrapper">
-        <p class="product-price">{{ product.productId.price }}€</p>
         <p class="product-name">
           {{ product.productId.name }} {{ product.productId.format }}
           {{ product.productId.category }}
         </p>
         <p class="product-quantity">Casse: {{ product.quantity }}</p>
+        <p class="product-price">
+          {{ product.productId.price * product.quantity }}€
+        </p>
       </div>
     </div>
     <div class="total-amount">Totale da pagare {{ order.totalAmount }}€</div>
@@ -153,18 +153,20 @@ const handleSubmit = async () => {
 
 .image-wrapper {
   height: 100px;
+  width: 100px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   align-self: center;
-  margin-bottom: 1em;
 }
 
 .product-wrapper {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--color-gray-mid);
+  /* border-bottom: 1px solid var(--color-gray-mid); */
+  gap: 1em;
+  margin-bottom: 1em;
 }
 
 .product-image {
@@ -172,6 +174,16 @@ const handleSubmit = async () => {
   max-width: 100%;
   object-fit: cover;
   border-radius: 4px;
+}
+
+.product-price {
+  font-weight: var(--fw-bold);
+  color: var(--color-accent);
+}
+
+.product-quantity {
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
 }
 
 .total-amount {

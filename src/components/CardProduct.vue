@@ -360,7 +360,7 @@ const isModified = computed(() => {
 }
 
 .product-description {
-  height: 100px;
+  height: 80px;
   overflow-y: auto;
   align-self: flex-start;
   font-size: var(--fs-small);

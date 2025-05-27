@@ -18,7 +18,7 @@
           active-class="link--active"
           @click="ui.showNav = false"
         >
-          <font-awesome-icon :icon="['fas', 'cart-shopping']" /> Carello
+          <font-awesome-icon :icon="['fas', 'cart-shopping']" /> Carrello
           <span v-if="cart.itemCount > 0" class="item-count-badge">
             {{ cart.itemCount }}
           </span>

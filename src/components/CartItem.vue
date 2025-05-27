@@ -19,7 +19,7 @@
     <div class="image-wrapper">
       <img
         class="product-image"
-        :src="product.image || `${IMAGES_URL}${product.image}`"
+        :src="`${IMAGES_URL}${product.image}`"
         alt="Prodotto"
       />
     </div>
@@ -66,7 +66,7 @@ const cart = useCartStore();
   position: relative;
   max-width: 100%;
   padding: 0.5em 1em;
-  /* gap: 2em; */
+  gap: 1em;
   max-width: 500px;
   display: flex;
   /* justify-content: space-between; */
@@ -138,13 +138,14 @@ const cart = useCartStore();
 }
 
 .image-wrapper {
-  height: 120px;
+  height: 100px;
+  min-width: 100px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   align-self: center;
-  margin-bottom: 1em;
+  /* margin-bottom: 1em; */
 }
 
 /* .image-title-wrapper {
