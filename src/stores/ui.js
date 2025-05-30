@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
 export const useUIStore = defineStore("ui", () => {
   const showNav = ref(false);
   const showUserNav = ref(false);
-  const isSettingsOpen = ref(false); // Gestisci l'apertura del menu impostazioni
-  const activeMenu = ref(null); // Memorizza quale menu è attualmente attivo
+  const isSettingsOpen = ref(false);
+  const activeMenu = ref(null);
+  const isMobile = ref(window.innerWidth < 768);
 
   const toggleNav = () => {
     showNav.value = !showNav.value;
@@ -16,22 +17,36 @@ export const useUIStore = defineStore("ui", () => {
   };
 
   const toggleSettings = () => {
-    isSettingsOpen.value = !isSettingsOpen.value; // Cambia stato apertura/chiusura del menu delle impostazioni
+    isSettingsOpen.value = !isSettingsOpen.value;
   };
 
   const closeMenu = () => {
     console.log("closeMenu() called");
-    isSettingsOpen.value = false; // Chiudi il menu impostazioni
-    activeMenu.value = null; // Resetta il menu attivo
+    isSettingsOpen.value = false;
+    activeMenu.value = null;
   };
 
   const openMenu = (menu) => {
-    activeMenu.value = menu; // Apre il menu specificato
+    activeMenu.value = menu;
   };
 
   const toggleMenu = (menu) => {
     activeMenu.value = activeMenu.value === menu ? null : menu;
   };
+
+  // Rende isMobile reattivo al resize
+  function handleResize() {
+    isMobile.value = window.innerWidth < 768;
+  }
+
+  onMounted(() => {
+    window.addEventListener("resize", handleResize);
+    handleResize(); // inizializza correttamente
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("resize", handleResize);
+  });
 
   return {
     showNav,
@@ -39,10 +54,11 @@ export const useUIStore = defineStore("ui", () => {
     showUserNav,
     toggleUserNav,
     isSettingsOpen,
-    activeMenu,
     toggleSettings,
-    toggleMenu,
     closeMenu,
+    activeMenu,
+    toggleMenu,
     openMenu,
+    isMobile,
   };
 });

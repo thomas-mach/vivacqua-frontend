@@ -23,3 +23,14 @@ export const getOrder = async (orderId) => {
     throw error;
   }
 };
+
+export const getUserOrders = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/order/getUserOrders`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

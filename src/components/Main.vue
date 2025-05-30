@@ -1,9 +1,14 @@
 <template>
-  <main>
+  <div>
     <router-view />
-  </main>
+  </div>
 </template>
 
 <script setup></script>
 
-<style scoped></style>
+<style scoped>
+div {
+  height: 100%;
+  /* border: 1px solid red; */
+}
+</style>

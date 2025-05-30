@@ -6,7 +6,8 @@
           to="/"
           class="link"
           active-class="link--active"
-          @click="ui.showNav = false"
+          @click="(ui.showNav = false), ui.toggleMenu('home')"
+          :class="{ 'btn--active': ui.activeMenu === 'home' }"
         >
           <font-awesome-icon :icon="['fas', 'house']" /> Home
         </router-link>
@@ -16,7 +17,8 @@
           to="/cart"
           class="link"
           active-class="link--active"
-          @click="ui.showNav = false"
+          @click="(ui.showNav = false), ui.toggleMenu('cart')"
+          :class="{ 'btn--active': ui.activeMenu === 'cart' }"
         >
           <font-awesome-icon :icon="['fas', 'cart-shopping']" /> Carrello
           <span v-if="cart.itemCount > 0" class="item-count-badge">

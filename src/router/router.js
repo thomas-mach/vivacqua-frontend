@@ -19,6 +19,7 @@ import Home from "../views/Home.vue";
 import DeleteAccount from "../views/DeleteAccount.vue";
 import ProductsCreate from "../views/Admin_Views/ProductsCreate.vue";
 import Checkout from "../views/Checkout.vue";
+import Dashboard from "../views/Dashboard.vue";
 
 const routes = [
   { path: "/", component: Home },
@@ -32,7 +33,7 @@ const routes = [
   { path: "/reactivate-user", component: ReactivateUser },
   { path: "/checkout", component: Checkout },
   { path: "/order-success", component: OrderSuccess },
-
+  { path: "/dashboard", component: Dashboard },
   {
     path: "/reset-password",
     name: "reset-password",

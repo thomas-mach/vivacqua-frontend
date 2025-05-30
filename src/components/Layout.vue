@@ -6,20 +6,20 @@
     </header>
 
     <!-- Nav: visibile fisso su desktop, con slide animata su mobile -->
-    <transition name="slide" mode="out-in" v-if="isMobile">
-      <div v-if="isReady && isMobile && ui.showNav" class="nav mobile-nav">
+    <transition name="slide" mode="out-in" v-if="ui.isMobile">
+      <div v-if="isReady && ui.isMobile && ui.showNav" class="nav mobile-nav">
         <slot name="nav" />
       </div>
     </transition>
 
     <!-- overlay -->
     <div
-      v-if="isMobile && ui.showNav"
+      v-if="ui.isMobile && ui.showNav"
       class="overlay"
       @click="(ui.showNav = false), ui.closeMenu()"
     ></div>
 
-    <nav v-if="isReady && !isMobile" class="nav static-nav">
+    <nav v-if="isReady && !ui.isMobile" class="nav static-nav">
       <slot name="nav" />
     </nav>
 
@@ -40,7 +40,6 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useUIStore } from "../stores/ui";
 const ui = useUIStore();
 const isReady = ref(false);
-const isMobile = ref(window.innerWidth < 768);
 const scrolled = ref(false);
 
 onMounted(() => {
@@ -52,13 +51,9 @@ onMounted(() => {
   });
 });
 
-onUnmounted(() => {
-  window.removeEventListener("resize", updateScreenSize);
-});
-
 const updateScreenSize = () => {
-  isMobile.value = window.innerWidth < 768;
-  ui.showNav = !isMobile.value; // auto mostra nav su desktop
+  ui.isMobile = window.innerWidth < 768;
+  ui.showNav = !ui.isMobile; // auto mostra nav su desktop
 };
 </script>
 

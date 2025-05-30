@@ -248,11 +248,11 @@
           </div>
           <div class="input-wraper button">
             <button class="btn" type="submit">REGISTRATI</button>
-            <div class="error-message-placeholder">
+            <!-- <div class="error-message-placeholder">
               <p class="error-message" v-if="getError('postalCode')">
                 {{ getError("postalCode") }}
               </p>
-            </div>
+            </div> -->
           </div>
         </form>
       </template>
@@ -505,7 +505,7 @@ input:focus {
   font-weight: var(--fw-bold);
   letter-spacing: 1.2px;
   cursor: pointer;
-  /* margin: 1em 0; */
+  margin-bottom: 1em;
   border: 0;
   transition: all 0.3s ease-in-out;
 }

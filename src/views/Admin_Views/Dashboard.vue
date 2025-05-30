@@ -1,25 +1,3 @@
-<template>
-  <div class="container">
-    <div class="wrapper">
-      <div class="wrapper-bar">
-        <select v-model="selectedRange" @change="handleRavenue">
-          <option value="7d">Ultimi 7 giorni</option>
-          <option value="1m">Ultimo mese</option>
-          <option value="1y">Ultimo anno</option>
-        </select>
-        <canvas ref="acquisitionsCanvas"></canvas>
-      </div>
-      <div class="wrapper-bar">
-        <canvas ref="topFiveProductsCanvas"></canvas>
-      </div>
-    </div>
-
-    <div class="container-doughnut">
-      <canvas ref="productStatusCanvas"></canvas>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import Chart from "chart.js/auto";
 import { ref, onMounted } from "vue";
@@ -30,6 +8,8 @@ import {
 } from "../../api/statsService";
 import dayjs from "dayjs";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import Multiselect from "@vueform/multiselect";
+import "@vueform/multiselect/themes/default.css";
 
 Chart.register(ChartDataLabels);
 
@@ -40,6 +20,11 @@ const productStatusCanvas = ref(null);
 const productStatusInstance = ref(null);
 const chartInstance = ref(null);
 const topFiveInstance = ref(null);
+const range = [
+  { label: "Ultimi 7 giorni", value: "7d" },
+  { label: "Ultimo mese", value: "1m" },
+  { label: "Ultimo anno", value: "1y" },
+];
 
 const labelMap = {
   "7d": "Entrate degli ultimi 7 giorni",
@@ -88,6 +73,17 @@ const handleGetProductsStatus = async () => {
         plugins: {
           legend: { display: true, position: "top" },
           tooltip: { enabled: true },
+          title: {
+            display: true,
+            text: "Ordini per stato",
+            font: {
+              size: 14,
+            },
+            padding: {
+              top: 10,
+              bottom: 10,
+            },
+          },
           datalabels: {
             color: "#000",
             formatter: (value, context) => {
@@ -258,21 +254,70 @@ onMounted(() => {
 });
 </script>
 
+<template>
+  <div class="container">
+    <div class="header">
+      <h3>Dashboard</h3>
+    </div>
+    <div class="divider"></div>
+    <div class="wrapper">
+      <Multiselect
+        v-model="selectedRange"
+        :options="range"
+        label="label"
+        track-by="value"
+        class="my-multiselect"
+        :can-clear="false"
+        @update:modelValue="handleRavenue"
+      />
+      <canvas ref="acquisitionsCanvas"></canvas>
+    </div>
+
+    <div class="wrapper">
+      <canvas ref="topFiveProductsCanvas"></canvas>
+    </div>
+
+    <div class="wrapper">
+      <canvas ref="productStatusCanvas"></canvas>
+    </div>
+  </div>
+</template>
+
 <style scoped>
 .container {
-  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
 }
-
-.wrapper-bar {
+.wrapper {
+  margin: 0 auto;
   width: 100%;
+  max-width: 500px;
   margin-bottom: 3em;
 }
 
-.container-doughnut {
+.my-multiselect {
+  max-width: 200px;
+  margin: 0;
+  margin-left: auto;
+}
+
+h3 {
+  font-size: var(--fs-medium);
+  font-weight: var(--fw-tiny);
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--color-gray-mid);
   width: 100%;
-  margin-bottom: 3em;
+  margin: 1em 0;
+}
+
+.header {
+  font-weight: var(--fw-reg);
+  display: flex;
+  justify-content: space-between;
 }
 </style>

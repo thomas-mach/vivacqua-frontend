@@ -22,6 +22,9 @@ import {
   faUserShield,
   faHouse,
   faCartShopping,
+  faChevronLeft,
+  faChevronRight,
+  faTableColumns,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
@@ -49,7 +52,10 @@ library.add(
   faGear,
   faUserShield,
   faHouse,
-  faCartShopping
+  faCartShopping,
+  faChevronLeft,
+  faChevronRight,
+  faTableColumns
 );
 
 // Esporta l'icona per registrarla nel main.js

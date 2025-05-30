@@ -29,6 +29,19 @@
       </li>
 
       <li v-if="isLoggedIn">
+        <RouterLink
+          to="/dashboard"
+          class="link"
+          active-class="link--active"
+          :class="{ 'btn--active': ui.activeMenu === 'user-dashboard' }"
+          @click="(ui.showNav = false), ui.toggleMenu('user')"
+        >
+          <font-awesome-icon :icon="['fas', 'table-columns']" />
+          Dashboard
+        </RouterLink>
+      </li>
+
+      <li v-if="isLoggedIn">
         <button
           class="link btn"
           :class="{ 'btn--active': ui.activeMenu === 'settings' }"
@@ -81,7 +94,7 @@
 import { ref, watch } from "vue";
 import { useUIStore } from "../../stores/ui.js";
 import { useAuthStore } from "../../stores/storeAuth.js";
-import { useRouter } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 
 const router = useRouter();

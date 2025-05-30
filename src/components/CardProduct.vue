@@ -8,6 +8,7 @@
     <div class="image-wrapper" @click="mode === 'admin' && editImage()">
       <img
         class="product-image"
+        :style="{ cursor: mode === 'admin' ? 'pointer' : 'auto' }"
         :src="
           isBase64(editable.image)
             ? editable.image
@@ -33,19 +34,15 @@
       <label for="name" class="label-input">Nome: </label>
       <input id="name" type="text" v-model="editable.name" />
     </div>
-    <h3 v-else class="product-name">
-      {{ product.name }} {{ product.format }}
-      <span>{{ product.category }}</span>
-    </h3>
+    <h3 v-else class="product-name">{{ product.name }} {{ product.format }}</h3>
+    <p class="product-category">{{ product.category }}</p>
 
     <!-- Prezzo -->
     <div class="input-wrapper" v-if="mode === 'admin'">
       <label for="price" class="label-input">Prezzo per cassa: </label>
       <input id="price" type="number" v-model="editable.price" />
     </div>
-    <div v-else class="price">
-      Prezzo: {{ product.price }}€ / cassa da {{ product.packSize }} bottiglie
-    </div>
+    <div v-else class="price">Prezzo: {{ product.price }}€ / cassa</div>
 
     <!-- Descrizione -->
     <div class="input-wrapper" v-if="mode === 'admin'">
@@ -114,18 +111,45 @@
     </div>
 
     <!-- Selettore quantità (solo in vista) -->
-    <div class="quantity-wrapper" v-if="mode === 'view'">
-      <p class="quantity-text">CASSE</p>
+    <div v-if="mode === 'view'" class="quantity-wrapper">
+      <p
+        class="quantity-text"
+        :class="{ 'text-disabled': !editable.available }"
+      >
+        CASSE
+      </p>
       <div class="btn-wrapper">
-        <button class="btn-quantity" @click="decrease">-</button>
-        <p class="quantity">{{ quantity }}</p>
-        <button class="btn-quantity" @click="increase">+</button>
+        <button
+          class="btn-quantity"
+          @click="decrease"
+          :disabled="!editable.available"
+        >
+          -
+        </button>
+        <p
+          class="quantity"
+          :class="{ 'quantity-disabled': !editable.available }"
+        >
+          {{ quantity }}
+        </p>
+        <button
+          class="btn-quantity"
+          @click="increase"
+          :disabled="!editable.available"
+        >
+          +
+        </button>
       </div>
     </div>
 
     <!-- Pulsanti di azione -->
     <div class="actions">
-      <button class="btn btn-action" v-if="mode === 'view'" @click="addToCart">
+      <button
+        class="btn btn-action"
+        v-if="mode === 'view'"
+        @click="addToCart"
+        :disabled="!editable.available"
+      >
         Aggiungi al carrello
       </button>
 
@@ -241,27 +265,6 @@ async function onImageSelected(event) {
 
   const resized = await resizeImage(file, 1024, 1024); // chiama resize
   editable.image = resized; // preview con immagine ridotta
-
-  // Mostra preview immediata
-  // const reader = new FileReader();
-  // reader.onload = () => {
-  //   editable.image = reader.result;
-  // };
-  // reader.readAsDataURL(file);
-
-  // Caricamento backend (opzionale)
-  // const formData = new FormData();
-  // formData.append("image", file);
-  // try {
-  //   const res = await fetch("http://localhost:3000/api/upload", {
-  //     method: "POST",
-  //     body: formData,
-  //   });
-  //   const data = await res.json();
-  //   editable.image = data.imagePath;
-  // } catch (err) {
-  //   console.error("Errore upload:", err);
-  // }
 }
 
 // --- Watch ---
@@ -296,12 +299,12 @@ const isModified = computed(() => {
   border: 1px solid var(--color-gray-mid);
   border-radius: 8px;
   padding: 1rem;
-  width: 400px;
+  width: 300px;
   text-align: center;
 }
 .product-image {
-  max-height: 100%;
-  max-width: 100%;
+  max-height: 290px;
+  max-width: 290px;
   object-fit: cover; /* o "cover" se vuoi che riempia tutto */
   border-radius: 4px;
 }
@@ -369,6 +372,15 @@ const isModified = computed(() => {
   margin: 1em 0 1em;
 }
 
+.text-disabled,
+.quantity-disabled {
+  color: var(--color-gray) !important;
+}
+
+.quantity-disabled {
+  border: 1px solid var(--color-gray) !important;
+}
+
 .btn-quantity {
   width: 2.2em; /* Larghezza uguale all'altezza */
   height: 2.2em;
@@ -383,6 +395,11 @@ const isModified = computed(() => {
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
+}
+
+.btn:disabled {
+  background-color: var(--color-gray);
+  cursor: not-allowed;
 }
 
 .quantity-wrapper {
@@ -459,7 +476,9 @@ const isModified = computed(() => {
 }
 
 .btn-action:hover,
-.btn-action:active {
+.btn-action:active,
+.btn-quantity:hover,
+.btn-quantity:active {
   background-color: var(--color-primary);
   box-shadow: 0 0 20px #13dbf6;
 }
@@ -470,8 +489,10 @@ const isModified = computed(() => {
   box-shadow: 0 0 20px #ff2a2a;
 }
 
-.product-name span {
+.product-category {
   font-size: var(--fs-body);
+  font-weight: var(--fw-tiny);
+  text-align: left;
 }
 
 button:disabled {
@@ -496,8 +517,8 @@ input-label {
 .image-wrapper {
   position: relative;
   cursor: pointer;
-  width: 100%;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   overflow: hidden;
   display: flex;
   align-items: center;
