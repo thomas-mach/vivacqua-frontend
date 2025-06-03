@@ -1,7 +1,12 @@
 <template>
   <div class="container">
+    <div class="header">
+      <h3>Dashboard</h3>
+    </div>
+    <div class="divider"></div>
+
+    <h4>I tuoi ordini</h4>
     <div class="table-wrapper">
-      <h3>I tuoi ordini</h3>
       <table class="table" border="0" cellspacing="0" cellpadding="5">
         <thead class="table-head">
           <tr>
@@ -65,34 +70,82 @@ onMounted(handleGetUserOrders);
 
 <style scoped>
 .container {
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  gap: 1em;
+}
+
+h3,
+h4 {
+  font-size: var(--fs-medium);
+  font-weight: var(--fw-tiny);
+}
+
+h4 {
+  font-size: var(--fs-body);
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--color-gray-mid);
   width: 100%;
+}
+
+.header {
+  font-weight: var(--fw-reg);
+  display: flex;
+  justify-content: space-between;
 }
 
 /* TABLE */
 .table-wrapper {
-  max-width: 800px;
-  margin-top: 1em;
+  width: 100%;
   margin: 0 auto;
+  margin-top: 1em 0;
+  border: 1px solid var(--color-gray-mid);
+  border-radius: 6px;
 }
 
 .table-head {
-  background-color: var(--color-gray-mid);
   text-align: left;
   font-weight: var(--fw-bold);
-  /* color: var(--color-white); */
-}
-.color1 {
-  background-color: var(--color-accent);
   color: var(--color-white);
 }
 
+th {
+  background-color: var(--color-gray);
+}
+
+th:first-child {
+  border-top-left-radius: 5px;
+}
+
+th:last-child {
+  border-top-right-radius: 5px;
+}
+.color1 {
+  background-color: var(--color-white);
+  /* color: var(--color-white); */
+}
+
+tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+
+tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}
+
 .color2 {
-  background-color: var(--color-primary);
+  background-color: var(--color-gray-light);
   /* color: var(--color-white); */
 }
 
 .table-row:hover {
-  opacity: 0.6;
+  background-color: var(--color-gray-mid);
   cursor: pointer;
 }
 

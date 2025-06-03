@@ -306,39 +306,21 @@ const isModified = computed(() => {
 
 <style scoped>
 .product-card {
-  flex: 1 1 calc(33.333% - 1rem); /* 3 colonne */
-  max-width: calc(33.333% - 1rem);
+  position: relative;
   display: flex;
   flex-direction: column;
-  /* gap: 1em; */
-  width: 100%;
-  max-width: 320px;
-  box-sizing: border-box;
   border: 1px solid var(--color-gray-mid);
   border-radius: 8px;
   padding: 1rem;
-  position: relative;
+  width: 300px;
+  text-align: center;
 }
-
 .product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  max-height: 290px;
+  max-width: 290px;
+  object-fit: cover; /* o "cover" se vuoi che riempia tutto */
   border-radius: 4px;
 }
-
-.image-wrapper {
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.5em 0;
-  position: relative;
-}
-
 .product-title {
   font-size: 1.1rem;
   margin: 0.5rem 0;
@@ -361,25 +343,23 @@ const isModified = computed(() => {
 
 .badge {
   position: absolute;
-  top: 0;
+  top: 1.25em;
   left: 0;
   background-color: var(--color-accent);
-  border-top-left-radius: 7px;
   color: var(--color-white);
-  padding: 0.2em 0.7em;
-  font-size: 0.7rem;
+  padding: 0.25em 0.75em;
+  font-size: var(--fs-small);
   z-index: 1000;
 }
 
 .badge-available {
   position: absolute;
-  top: 0;
+  top: 1.25em;
   right: 0;
-  border-top-right-radius: 7px;
   background-color: var(--clr-error);
   color: var(--color-white);
-  padding: 0.2em 0.7em;
-  font-size: 0.7rem;
+  padding: 0.25em 0.75em;
+  font-size: var(--fs-small);
   z-index: 1000;
 }
 
@@ -440,22 +420,19 @@ const isModified = computed(() => {
   flex-direction: column;
   align-items: center;
   gap: 0.5em;
-  margin-top: auto;
 }
 
 .actions {
+  margin-top: 1em;
   display: flex;
   align-items: center;
   justify-content: center;
-  align-self: flex-end;
-  margin: 1em auto 0;
 }
 
 .action-btns {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  gap: 0.7em;
 }
 
 .quantity-text {
@@ -550,6 +527,19 @@ input-label {
   margin-bottom: 0.5em;
 }
 
+.image-wrapper {
+  position: relative;
+  cursor: pointer;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-bottom: 1em;
+}
+
 .image-hover-badge {
   position: absolute;
   bottom: 50%;
@@ -560,10 +550,9 @@ input-label {
   padding: 0.4em 0.8em;
   font-size: 0.75rem;
   border-radius: 4px;
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
-  text-align: center;
 }
 
 .image-wrapper:hover .image-hover-badge {

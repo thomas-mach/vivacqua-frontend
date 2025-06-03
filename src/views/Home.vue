@@ -24,8 +24,9 @@
       placeholder="Prezzo"
       class="my-multiselect"
     />
-
-    <button class="btn" @click="resetFilters()">Reset</button>
+    <button v-if="!ui.isMobile" class="btn" @click="resetFilters()">
+      Reset
+    </button>
   </div>
   <div class="product-list">
     <ProductCard
@@ -39,6 +40,7 @@
 
 <script setup>
 import { onMounted, computed, ref } from "vue";
+import { useUIStore } from "../stores/ui.js";
 import ProductCard from "../components/CardProduct.vue";
 import { useProductStore } from "../stores/storeProducts";
 import { useCartStore } from "../stores/storeCart";
@@ -47,6 +49,7 @@ import "vue-toastification/dist/index.css";
 import Multiselect from "@vueform/multiselect";
 import "@vueform/multiselect/themes/default.css";
 
+const ui = useUIStore();
 const toast = useToast();
 const productStore = useProductStore();
 const cart = useCartStore();
@@ -114,21 +117,18 @@ onMounted(async () => {
 }
 
 .product-list {
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
+  gap: 0.7rem;
+  /* justify-content: center; */
 }
 
 .wrapper-filters {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
   gap: 0.7em;
   margin-bottom: 0.7em;
-  /* border: 1px solid var(--color-gray-mid); */
-  border-radius: 5px;
-  padding: 1em;
 }
 
 .btn {
@@ -156,68 +156,19 @@ onMounted(async () => {
 /* MULTI SELECT */
 
 /* Contenitore select */
+
 .my-multiselect {
-  width: 170px;
+  width: 120px;
   margin: 0;
 }
-.my-multiselect ::v-deep .multiselect-dropdown {
+
+.my-multiselect :deep(.multiselect-dropdown) {
   z-index: 9999 !important;
 }
 
-.vf__multiselect {
-  font-family: "Poppins", sans-serif;
-  /* max-width: 320px; */
-  border-radius: 8px;
-  border: 2px solid #007bff;
-}
-
-/* Barra di selezione */
-.vf__control {
-  padding: 10px;
-  background-color: #f9faff;
-  border-radius: 8px;
-  border: none;
-  box-shadow: none;
-}
-
-/* Placeholder */
-.vf__placeholder {
-  color: #999;
-  font-style: italic;
-}
-
-/* Opzioni */
-.vf__option {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-/* Opzione evidenziata */
-.vf__option--hover {
-  background-color: #e0f0ff;
-}
-
-/* Opzione selezionata */
-.vf__option--selected {
-  background-color: #007bff;
-  color: white;
-}
-
-/* Tag singoli (per selezione multipla) */
-.vf__tag {
-  background-color: #007bff;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 16px;
-  margin-right: 6px;
-  font-size: 0.9rem;
-}
-
-/* Icona cancella */
-.vf__clear {
-  color: #007bff;
-  cursor: pointer;
-  font-weight: bold;
+.my-multiselect :deep(.multiselect-placeholder) {
+  padding: 0.4em;
+  margin: 0;
 }
 
 h3,

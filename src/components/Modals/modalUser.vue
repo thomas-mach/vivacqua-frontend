@@ -151,6 +151,8 @@ function handleSubmit() {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  max-height: 95vh;
+  overflow-y: auto;
 }
 
 form {

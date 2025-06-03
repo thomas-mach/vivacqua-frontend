@@ -2,30 +2,34 @@
   <div class="modal-backdrop">
     <div class="modal-content">
       <h2 class="title">Dettagli Ordine</h2>
-
+      <div class="divider"></div>
       <div class="info-wrapper">
         <p><strong>ID Ordine: </strong>{{ order._id }}</p>
-        <p><strong>Data Ordine: </strong> {{ order.orderDate }}</p>
+        <p>
+          <strong>Data Ordine: </strong>
+          {{ new Date(order.orderDate).toLocaleDateString("it-IT") }}
+        </p>
         <p><strong>Stato:</strong> {{ order.status }}</p>
       </div>
-
+      <div class="divider"></div>
       <div>
-        <h3>Indirizzo di Consegna</h3>
+        <h3>Indirizzo di Consegna:</h3>
         <p>
-          <span>{{ order.userName }}</span> <span>{{ order.userSurname }}</span>
+          <span> {{ order.userName }} </span>
+          <span class="dx">{{ order.userSurname }}</span>
         </p>
         <p>
           Via:
-          <span>{{ order.deliveryAddress.street }}</span>
-          <span>{{ order.deliveryAddress.houseNumber }}</span>
+          <span> {{ order.deliveryAddress.street }}</span>
+          <span class="dx"> {{ order.deliveryAddress.houseNumber }}</span>
         </p>
         <p>
           Città:
-          <span>{{ order.deliveryAddress.city }}</span>
-          <span>{{ order.deliveryAddress.postalCode }}</span>
+          <span> {{ order.deliveryAddress.city }}</span>
+          <span class="dx"> {{ order.deliveryAddress.postalCode }}</span>
         </p>
       </div>
-
+      <div class="divider"></div>
       <div
         class="product-wrapper"
         v-for="product in order.products"
@@ -50,7 +54,7 @@
           <p>Subtotale: €{{ product.productId.price * product.quantity }}</p>
         </div>
       </div>
-
+      <div class="divider"></div>
       <div>
         <p>
           <strong>Totale Ordine: €{{ order.totalAmount }}</strong>
@@ -97,6 +101,8 @@ const emit = defineEmits(["onClose"]);
   display: flex;
   flex-direction: column;
   gap: 1em;
+  max-height: 95vh;
+  overflow-y: auto;
 }
 
 .btn-close {
@@ -136,5 +142,21 @@ img {
 
 h3 {
   margin-bottom: 0.3em;
+}
+
+h2 {
+  font-size: var(--fs-medium);
+  font-weight: var(--fw-tiny);
+}
+
+.dx {
+  margin-left: 8px;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--color-gray-mid);
+  width: 100%;
+  /* margin: 1em 0; */
 }
 </style>

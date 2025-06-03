@@ -25,6 +25,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faTableColumns,
+  faGlobe,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
@@ -55,7 +56,8 @@ library.add(
   faCartShopping,
   faChevronLeft,
   faChevronRight,
-  faTableColumns
+  faTableColumns,
+  faGlobe
 );
 
 // Esporta l'icona per registrarla nel main.js

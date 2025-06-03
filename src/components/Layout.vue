@@ -121,7 +121,7 @@ const updateScreenSize = () => {
 /* Footer */
 .footer {
   grid-area: footer;
-  padding: 1rem;
+  /* padding: 1rem; */
   text-align: center;
 }
 
