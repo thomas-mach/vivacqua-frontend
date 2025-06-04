@@ -195,8 +195,8 @@
                 {{ getError("postalCode") }}
               </p>
             </div>
-            <router-link to="/" class="password-reset-link"
-              >Esci senza salvare</router-link
+            <router-link to="/" class="password-reset-link">
+              <-- Torna alla home</router-link
             >
           </div>
         </form>
@@ -262,13 +262,15 @@ const handleUpdateMe = async () => {
       doorbell: dataAfterUpdate.data.user.doorbell,
     };
     authStore.login(userData);
-    if (email !== dataAfterUpdate.data.user.email) {
+    if (email.value !== dataAfterUpdate.data.user.email) {
       await logout();
       Cookies.remove("jwt", { path: "/" });
       authStore.logout();
       await router.push("/");
     }
-    toast.success(data.message);
+    toast.success(data.message || "Modifche salvate corettamente.", {
+      timeout: 2000,
+    });
   } catch (error) {
     console.log(error);
     errorMessage.value = error.response.data.message;
