@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="app">
+    <!-- layout -->
     <Layout>
       <template #header> <Header /></template>
       <template #main> <Main /></template>
