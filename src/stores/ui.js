@@ -13,7 +13,7 @@ export const useUIStore = defineStore("ui", () => {
 
     if (showNav.value) {
       document.body.classList.add("no-scroll");
-    } else {
+    } else if (showNav.value === false) {
       document.body.classList.remove("no-scroll");
     }
   };
