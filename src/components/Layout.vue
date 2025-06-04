@@ -65,7 +65,7 @@ const updateScreenSize = () => {
     "main"
     "footer";
   grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
+  min-height: 100dvh;
   min-width: 100vw;
   /* border: 1px solid red; */
 }
