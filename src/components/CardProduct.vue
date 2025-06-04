@@ -229,7 +229,8 @@ function getImageUrl(imagePath) {
     return imagePath;
   }
 
-  return `http://localhost:3000${imagePath}`;
+  const baseUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
+  return `${baseUrl}${imagePath}`;
 }
 
 // --- Funzioni ---

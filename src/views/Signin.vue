@@ -151,6 +151,7 @@ const hendelSignin = async () => {
     console.log(localStorage.getItem("user"));
   } catch (err) {
     if (err?.response?.data?.error?.code === "ACCOUNT_DISABLED") {
+      console.log("error from catch signin", err);
       reactivateAccountLink.value = true;
       authStore.login({
         email: submittedEmail,
