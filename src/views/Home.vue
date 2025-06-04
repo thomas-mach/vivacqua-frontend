@@ -117,7 +117,7 @@ onMounted(async () => {
 }
 
 .product-list {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
