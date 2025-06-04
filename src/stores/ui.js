@@ -10,6 +10,12 @@ export const useUIStore = defineStore("ui", () => {
 
   const toggleNav = () => {
     showNav.value = !showNav.value;
+
+    if (showNav.value) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
   };
 
   const toggleUserNav = () => {
@@ -38,6 +44,14 @@ export const useUIStore = defineStore("ui", () => {
   function handleResize() {
     isMobile.value = window.innerWidth < 768;
   }
+
+  // function handleResize() {
+  //   isMobile.value = window.innerWidth < 768;
+  //   if (!isMobile.value && showNav.value) {
+  //     showNav.value = false;
+  //     document.body.classList.remove("no-scroll");
+  //   }
+  // }
 
   onMounted(() => {
     window.addEventListener("resize", handleResize);
