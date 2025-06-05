@@ -74,7 +74,7 @@ const updateScreenSize = () => {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: 100%;
   background-color: var(--color-accent);
   z-index: 5000;
   padding: 1rem;
