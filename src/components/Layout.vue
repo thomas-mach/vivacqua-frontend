@@ -16,7 +16,7 @@
     <div
       v-if="ui.isMobile && ui.showNav"
       class="overlay"
-      @click="(ui.showNav = false), ui.closeMenu()"
+      @click="ui.toggleNav(), ui.closeMenu()"
     ></div>
 
     <nav v-if="isReady && !ui.isMobile" class="nav static-nav">
