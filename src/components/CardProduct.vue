@@ -369,7 +369,7 @@ const isModified = computed(() => {
   color: var(--color-white);
   padding: 0.2em 0.7em;
   font-size: 0.7rem;
-  z-index: 1000;
+  /* z-index: 1000; */
 }
 
 .badge-available {
@@ -381,7 +381,7 @@ const isModified = computed(() => {
   color: var(--color-white);
   padding: 0.2em 0.7em;
   font-size: 0.7rem;
-  z-index: 1000;
+  /* z-index: 1000; */
 }
 
 .price {

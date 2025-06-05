@@ -147,13 +147,13 @@ p {
   background-color: var(--color-accent);
   color: var(--color-white);
   border: none;
-  padding: 0.65em 1.75em;
+  padding: 0.65em 1em;
   border-radius: 50px;
   font-size: var(--fs-body);
   font-weight: var(--fw-bold);
   letter-spacing: 1.2px;
   cursor: pointer;
-  /* margin: 1em 0; */
+  margin: 0;
   border: 0;
   text-decoration: none;
   text-align: center;
@@ -195,7 +195,7 @@ button:disabled:hover {
 
 @media (max-width: 400px) {
   .btn {
-    margin-top: 0.5em;
+    /* margin-top: 0.5em; */
   }
 }
 </style>
