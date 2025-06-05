@@ -24,7 +24,7 @@
     <button
       v-if="isLoggedIn"
       class="link btn"
-      @click.prevent="(ui.showNav = false), handleLogout()"
+      @click.prevent="ui.toggleNav(), handleLogout()"
     >
       <font-awesome-icon
         class="icon"

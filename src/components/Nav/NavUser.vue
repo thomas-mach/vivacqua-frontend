@@ -6,7 +6,7 @@
           to="/signup"
           class="link"
           active-class="link--active"
-          @click="ui.showNav = false"
+          @click="ui.toggleNav()"
         >
           <font-awesome-icon class="icon" :icon="['fas', 'user-plus']" />
           Registrati
@@ -18,7 +18,7 @@
           to="/signin"
           class="link"
           active-class="link--active"
-          @click="ui.showNav = false"
+          @click="ui.toggleNav()"
         >
           <font-awesome-icon
             class="icon"
@@ -34,7 +34,7 @@
           class="link"
           active-class="link--active"
           :class="{ 'btn--active': ui.activeMenu === 'user-dashboard' }"
-          @click="(ui.showNav = false), ui.toggleMenu('user')"
+          @click="ui.toggleNav(), ui.toggleMenu('user')"
         >
           <font-awesome-icon :icon="['fas', 'table-columns']" />
           Dashboard
@@ -59,7 +59,7 @@
               to="/settings/password-update"
               class="sublink"
               active-class="sublink--active"
-              @click="ui.showNav = false"
+              @click="ui.toggleNav()"
             >
               - Cambio password
             </router-link>
@@ -69,7 +69,7 @@
               to="/settings/update-me"
               class="sublink"
               active-class="sublink--active"
-              @click="ui.showNav = false"
+              @click="ui.toggleNav()"
             >
               - Modifica profilo
             </router-link>
@@ -79,7 +79,7 @@
               to="/settings/delete-account"
               class="sublink"
               active-class="sublink--active"
-              @click="ui.showNav = false"
+              @click="ui.toggleNav()"
             >
               - Elimina Account
             </router-link>

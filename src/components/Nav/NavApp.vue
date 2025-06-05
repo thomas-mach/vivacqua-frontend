@@ -6,7 +6,7 @@
           to="/"
           class="link"
           active-class="link--active"
-          @click="(ui.showNav = false), ui.toggleMenu('home')"
+          @click="ui.toggleNav(), ui.toggleMenu('home')"
           :class="{ 'btn--active': ui.activeMenu === 'home' }"
         >
           <font-awesome-icon :icon="['fas', 'house']" /> Home
@@ -17,7 +17,7 @@
           to="/cart"
           class="link"
           active-class="link--active"
-          @click="(ui.showNav = false), ui.toggleMenu('cart')"
+          @click="ui.toggleNav(), ui.toggleMenu('cart')"
           :class="{ 'btn--active': ui.activeMenu === 'cart' }"
         >
           <font-awesome-icon :icon="['fas', 'cart-shopping']" /> Carrello
