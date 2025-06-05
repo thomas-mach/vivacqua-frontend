@@ -134,6 +134,7 @@ const hendleUpdatePassword = async () => {
   }
 
   try {
+    ui.isLoading = true;
     const response = await updatePassword({
       password: passwordCurrent.value,
       passwordNew: passwordNew.value,
@@ -145,6 +146,8 @@ const hendleUpdatePassword = async () => {
     hendleLogout();
   } catch (error) {
     errorMessage.value = error.response?.data?.message;
+  } finally {
+    ui.isLoading = false;
   }
 };
 
@@ -153,7 +156,7 @@ const hendleLogout = async () => {
     await logout();
     authStore.logout();
     ui.closeMenu();
-    router.push("/signin");
+    router.push("/");
   } catch (error) {}
 };
 

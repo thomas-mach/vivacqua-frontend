@@ -216,6 +216,9 @@ import { createProduct } from "../../api/productService";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import { useRouter } from "vue-router";
+import { useUIStore } from "../../stores/ui.js";
+
+const ui = useUIStore();
 
 // Props ricevute
 const props = defineProps({
@@ -281,6 +284,7 @@ async function onImageSelected(event) {
 
 const hendleCreateProduct = async () => {
   try {
+    ui.isLoading = true;
     const formData = new FormData();
     formData.append("name", name.value);
     formData.append("price", price.value);
@@ -306,6 +310,8 @@ const hendleCreateProduct = async () => {
     } else {
       errorsBackend.value = [{ field: "general", message: "Error" }];
     }
+  } finally {
+    ui.isLoading = false;
   }
 };
 

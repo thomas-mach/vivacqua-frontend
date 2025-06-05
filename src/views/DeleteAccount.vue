@@ -19,12 +19,15 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/storeAuth.js";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { useUIStore } from "../stores/ui.js";
 
+const ui = useUIStore();
 const toast = useToast();
 const router = useRouter();
 const authStore = useAuthStore();
 const handeleDeleteAccount = async () => {
   try {
+    ui.isLoading = true;
     const response = await deleteAccount();
     await logout();
     authStore.logout();
@@ -34,6 +37,8 @@ const handeleDeleteAccount = async () => {
     router.push("/");
   } catch (error) {
     console.log(error);
+  } finally {
+    ui.isLoading = false;
   }
 };
 </script>

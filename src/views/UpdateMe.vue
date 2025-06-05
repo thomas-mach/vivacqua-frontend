@@ -215,7 +215,9 @@ import { useAuthStore } from "../stores/storeAuth.js";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { useUIStore } from "../stores/ui.js";
 
+const ui = useUIStore();
 const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToast();
@@ -236,6 +238,7 @@ const handleUpdateMe = async () => {
   successMessage.value = "";
   errorMessage.value = "";
   try {
+    ui.isLoading = true;
     const data = await updateMe({
       name: name.value,
       surname: surname.value,
@@ -280,6 +283,8 @@ const handleUpdateMe = async () => {
     } else {
       errorsBackend.value = [{ field: "general", message: "Error" }];
     }
+  } finally {
+    ui.isLoading = false;
   }
 };
 

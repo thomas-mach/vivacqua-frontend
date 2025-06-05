@@ -7,6 +7,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../api/productService";
+import { useUIStore } from "../stores/ui.js";
 
 export const useProductStore = defineStore("products", () => {
   const allProducts = ref([]);
@@ -14,11 +15,15 @@ export const useProductStore = defineStore("products", () => {
   const response = ref([]);
 
   const fetchPublicProducts = async () => {
+    const ui = useUIStore();
+    ui.isLoading = true;
     try {
       response.value = await getProducts(); // solo attivi
       allProducts.value = response.value.data.products;
     } catch (error) {
       console.log(error);
+    } finally {
+      ui.isLoading = false;
     }
   };
 

@@ -44,7 +44,9 @@
 import { getUserOrders } from "../api/orderService";
 import { onMounted, ref } from "vue";
 import OrderModal from "../components/Modals/modalOrder.vue";
+import { useUIStore } from "../stores/ui.js";
 
+const ui = useUIStore();
 const orders = ref([]);
 const selectedOrder = ref({});
 const isModalOpen = ref(false);
@@ -57,11 +59,14 @@ function openOrderDetails(order) {
 
 const handleGetUserOrders = async () => {
   try {
+    ui.isLoading = true;
     const response = await getUserOrders();
     orders.value = response.data.orders;
     console.log(orders.value);
   } catch (err) {
     console.log(err);
+  } finally {
+    ui.isLoading = false;
   }
 };
 
