@@ -281,8 +281,10 @@ import { signup } from "../api/authService.js";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import { useAuthStore } from "../stores/storeAuth.js";
+import { useUIStore } from "../stores/ui.js";
 
 const authStore = useAuthStore();
+const ui = useUIStore();
 const toast = useToast();
 const icon = ref(["fas", "lock"]);
 const name = ref("");
@@ -306,6 +308,7 @@ const handleSignup = async () => {
   errorsBackend.value = [];
   successMessage.value = "";
   errorMessage.value = "";
+  ui.isLoading = true;
   try {
     const data = await signup({
       name: name.value,
@@ -350,6 +353,8 @@ const handleSignup = async () => {
         email: submittedEmail,
       });
     }
+  } finally {
+    ui.isLoading = false;
   }
 };
 
