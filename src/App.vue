@@ -19,6 +19,26 @@ import { useAuthStore } from "../src/stores/storeAuth";
 
 const auth = useAuthStore();
 console.log("Stato login:", auth.isLoggedIn); // forza inizializzazione
+
+import { onMounted, onBeforeUnmount } from "vue";
+
+function updateViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+}
+
+onMounted(() => {
+  updateViewportHeight();
+  window.addEventListener("resize", updateViewportHeight);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateViewportHeight);
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.app {
+  height: calc(var(--vh, 1vh) * 100);
+}
+</style>
