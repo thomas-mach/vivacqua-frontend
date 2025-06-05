@@ -65,8 +65,8 @@ const cart = useCartStore();
 .wrapper {
   position: relative;
   max-width: 100%;
-  padding: 0.5em 1em;
-  gap: 1em;
+  padding: 0.7em;
+  gap: 0.5em;
   max-width: 500px;
   display: flex;
   /* justify-content: space-between; */
@@ -166,8 +166,8 @@ const cart = useCartStore();
 
 .x-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 7px;
+  right: 7px;
   color: var(--color-gray);
   font-size: var(--fs-body);
   cursor: pointer;

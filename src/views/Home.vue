@@ -1,40 +1,45 @@
 <template>
-  <div class="header">
-    <h3>Prodotti</h3>
-  </div>
-  <div class="divider"></div>
-  <div class="wrapper-filters">
-    <Multiselect
-      v-model="selectedCategory"
-      :options="category"
-      placeholder="Cattegoria"
-      class="my-multiselect"
-    />
+  <div class="container">
+    <div class="header">
+      <h3>Prodotti</h3>
+    </div>
+    <div class="divider"></div>
+    <div class="wrapper-filters">
+      <Multiselect
+        v-model="selectedCategory"
+        :options="category"
+        :append-to-body="true"
+        placeholder="Cattegoria"
+        class="my-multiselect"
+      />
 
-    <Multiselect
-      v-model="selectedFormat"
-      :options="formats"
-      placeholder="Formato"
-      class="my-multiselect"
-    />
+      <Multiselect
+        v-model="selectedFormat"
+        :options="formats"
+        :append-to-body="true"
+        placeholder="Formato"
+        class="my-multiselect"
+      />
 
-    <Multiselect
-      v-model="sortOrder"
-      :options="order"
-      placeholder="Prezzo"
-      class="my-multiselect"
-    />
-    <button v-if="!ui.isMobile" class="btn" @click="resetFilters()">
-      Reset
-    </button>
-  </div>
-  <div class="product-list">
-    <ProductCard
-      v-for="product in sortedProducts"
-      :key="product._id"
-      :product="product"
-      @add-to-cart="handleAddToCart"
-    />
+      <Multiselect
+        v-model="sortOrder"
+        :options="order"
+        :append-to-body="true"
+        placeholder="Prezzo"
+        class="my-multiselect"
+      />
+      <button v-if="!ui.isMobile" class="btn" @click="resetFilters()">
+        Reset
+      </button>
+    </div>
+    <div class="product-list">
+      <ProductCard
+        v-for="product in sortedProducts"
+        :key="product._id"
+        :product="product"
+        @add-to-cart="handleAddToCart"
+      />
+    </div>
   </div>
 </template>
 
@@ -117,11 +122,9 @@ onMounted(async () => {
 }
 
 .product-list {
-  /* margin: 0 auto; */
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
-  /* justify-content: center; */
 }
 
 .wrapper-filters {
@@ -129,6 +132,7 @@ onMounted(async () => {
   display: flex;
   gap: 0.7em;
   margin-bottom: 0.7em;
+  overflow-x: auto;
 }
 
 .btn {
@@ -158,12 +162,13 @@ onMounted(async () => {
 /* Contenitore select */
 
 .my-multiselect {
-  width: 120px;
+  min-width: 120px;
+  max-width: 150px;
   margin: 0;
 }
 
 .my-multiselect :deep(.multiselect-dropdown) {
-  z-index: 9999 !important;
+  z-index: 10000 !important;
 }
 
 .my-multiselect :deep(.multiselect-placeholder) {
