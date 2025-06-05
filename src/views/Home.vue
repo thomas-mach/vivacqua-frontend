@@ -133,6 +133,12 @@ onMounted(async () => {
   gap: 0.7em;
   margin-bottom: 0.7em;
   overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.wrapper-filters::-webkit-scrollbar {
+  display: none; /* Chrome, Safari e Edge */
 }
 
 .btn {

@@ -404,6 +404,12 @@ const isModified = computed(() => {
   font-weight: var(--fw-tiny);
   text-align: left;
   margin: 1em 0 1em;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.product-description::-webkit-scrollbar {
+  display: none; /* Chrome, Safari e Edge */
 }
 
 .text-disabled,
