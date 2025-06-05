@@ -25,14 +25,14 @@
 }
 
 .logo {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   display: block;
   color: var(--color-primary);
 }
 
 .logo-text {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: var(--fw-tiny);
   color: var(--color-gray-light);
 }

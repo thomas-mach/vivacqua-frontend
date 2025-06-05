@@ -37,7 +37,14 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .app {
   height: calc(var(--vh, 1vh) * 100);
 }
