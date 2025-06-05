@@ -108,23 +108,30 @@ const handleSubmit = async () => {
   loading.value = true;
   error.value = "";
 
-  const { error: stripeError, paymentIntent } =
-    await stripe.value.confirmCardPayment(clientSecret.value, {
-      payment_method: {
-        card: elements.value.getElement("card"),
-      },
-    });
+  try {
+    ui.isLoading = true;
+    const { error: stripeError, paymentIntent } =
+      await stripe.value.confirmCardPayment(clientSecret.value, {
+        payment_method: {
+          card: elements.value.getElement("card"),
+        },
+      });
 
-  if (stripeError) {
-    error.value = stripeError.message;
-  } else if (paymentIntent.status === "succeeded") {
-    console.log("Pagamento completato!");
-    payment.setClientSecret(null);
-    cart.clearCart();
-    router.push("/order-success");
+    if (stripeError) {
+      error.value = stripeError.message;
+    } else if (paymentIntent.status === "succeeded") {
+      console.log("Pagamento completato!");
+      payment.setClientSecret(null);
+      cart.clearCart();
+      router.push("/order-success");
+    }
+  } catch (err) {
+    error.value = "Errore inatteso durante il pagamento.";
+    console.error("Errore nel submit:", err);
+  } finally {
+    loading.value = false;
+    ui.isLoading = false;
   }
-
-  loading.value = false;
 };
 </script>
 
