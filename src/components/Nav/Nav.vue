@@ -75,7 +75,7 @@ const handleLogout = async () => {
     authStore.logout();
     ui.closeMenu();
     cart.clearCart();
-    toast.success("Hai effettuato il logout.", { timeout: 3000 });
+    toast.success("Hai effettuato il logout.", { timeout: 2000 });
     await router.push("/");
     console.log(response);
   } catch (error) {
