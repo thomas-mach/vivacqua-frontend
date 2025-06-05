@@ -44,7 +44,7 @@
       <div
         v-if="ui.showUserNav"
         class="user-menu-overlay"
-        @click="ui.showUserNav = false"
+        @click="ui.toggleNav()"
       ></div>
 
       <div v-if="ui.showUserNav" class="user-menu">

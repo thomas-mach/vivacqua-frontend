@@ -19,7 +19,7 @@
             to="/admin/dashboard"
             class="sublink"
             active-class="sublink--active"
-            @click="ui.showNav = false"
+            @click="ui.toggleNav()"
           >
             - Dashboard
           </router-link>
@@ -29,7 +29,7 @@
             to="/admin/products"
             class="sublink"
             active-class="sublink--active"
-            @click="ui.showNav = false"
+            @click="ui.toggleNav()"
           >
             - Prodotti
           </router-link>
@@ -39,7 +39,7 @@
             to="/admin/users"
             class="sublink"
             active-class="sublink--active"
-            @click="ui.showNav = false"
+            @click="ui.toggleNav()"
           >
             - Utenti
           </router-link>

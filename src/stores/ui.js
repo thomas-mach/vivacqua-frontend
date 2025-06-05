@@ -10,10 +10,9 @@ export const useUIStore = defineStore("ui", () => {
 
   const toggleNav = () => {
     showNav.value = !showNav.value;
-
     if (showNav.value) {
       document.body.classList.add("no-scroll");
-    } else if (showNav.value === false) {
+    } else {
       document.body.classList.remove("no-scroll");
     }
   };
