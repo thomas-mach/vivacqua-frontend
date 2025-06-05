@@ -7,6 +7,7 @@ export const useUIStore = defineStore("ui", () => {
   const isSettingsOpen = ref(false);
   const activeMenu = ref(null);
   const isMobile = ref(window.innerWidth < 768);
+  const isLoading = ref(false);
 
   const toggleNav = () => {
     showNav.value = !showNav.value;
@@ -73,5 +74,6 @@ export const useUIStore = defineStore("ui", () => {
     toggleMenu,
     openMenu,
     isMobile,
+    isLoading,
   };
 });

@@ -99,8 +99,42 @@ input:-webkit-autofill {
 
 /* UTILS */
 
-.center-element {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.loader {
+  width: 100%;
+  height: 4px;
+  /* display: block; */
+  position: fixed;
+  background: var(--color-gray-light);
+  overflow: hidden;
+  z-index: 500000;
 }
+.loader::after {
+  content: "";
+  width: 192px;
+  height: 4px;
+  background: var(--color-primary);
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  animation: animloader 2s linear infinite;
+  z-index: 500000;
+}
+
+@keyframes animloader {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    left: 100%;
+    transform: translateX(0%);
+  }
+}
+
+/* .position-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100000;
+} */

@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="app">
+    <div v-if="ui.isLoading" class="loader"></div>
     <Layout>
       <template #header> <Header /></template>
       <template #main> <Main /></template>
@@ -16,7 +17,9 @@ import Main from "./components/Main.vue";
 import Footer from "./components/Footer.vue";
 import Nav from "./components/Nav/Nav.vue";
 import { useAuthStore } from "../src/stores/storeAuth";
+import { useUIStore } from "../src/stores/ui";
 
+const ui = useUIStore();
 const auth = useAuthStore();
 console.log("Stato login:", auth.isLoggedIn); // forza inizializzazione
 

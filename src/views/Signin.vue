@@ -95,8 +95,9 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/storeAuth.js";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { useUIStore } from "../stores/ui.js";
 
-// const authMessage = useMessagesStore();
+const ui = useUIStore();
 const toast = useToast();
 const icon = ref(["fas", "lock"]);
 const password = ref("");
@@ -122,6 +123,7 @@ const hendelSignin = async () => {
   emailValidate();
   passwordValidate();
   try {
+    ui.isLoading = true;
     const response = await signin({
       email: email.value,
       password: password.value,
@@ -163,6 +165,8 @@ const hendelSignin = async () => {
     err.response?.data?.message === "Email o password non valide"
       ? (isPasswordEndEmailCorrect.value = false)
       : true;
+  } finally {
+    ui.isLoading = false;
   }
 };
 
