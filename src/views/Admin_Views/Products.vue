@@ -16,7 +16,7 @@
             <th>Nome</th>
             <th>Tipo</th>
             <th>Disp.</th>
-            <th>Attivo</th>
+            <th>Att.</th>
           </tr>
         </thead>
         <tbody>
@@ -78,7 +78,8 @@ function getImageUrl(imagePath) {
     return imagePath;
   }
 
-  return `http://localhost:3000${imagePath}`;
+  const baseUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
+  return `${baseUrl}${imagePath}`;
 }
 
 function isBase64(str) {
@@ -157,8 +158,8 @@ p {
 }
 
 .image-wrapper {
-  height: 70px;
-  width: 70px;
+  height: 50px;
+  width: 50px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -170,8 +171,8 @@ p {
 }
 
 .product-image {
-  max-height: 60px;
-  max-width: 60px;
+  max-height: 50px;
+  max-width: 50px;
   object-fit: cover;
 }
 
