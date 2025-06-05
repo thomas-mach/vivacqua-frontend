@@ -10,9 +10,11 @@ import dayjs from "dayjs";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import Multiselect from "@vueform/multiselect";
 import "@vueform/multiselect/themes/default.css";
+import { useUIStore } from "../../stores/ui.js";
 
 Chart.register(ChartDataLabels);
 
+const ui = useUIStore();
 const selectedRange = ref("7d");
 const acquisitionsCanvas = ref(null);
 const topFiveProductsCanvas = ref(null);
@@ -33,6 +35,7 @@ const labelMap = {
 };
 
 const handleGetProductsStatus = async () => {
+  ui.isLoading = true;
   try {
     const response = await getProductsStatus();
     const ordersStatus = response.data.data;
@@ -103,6 +106,8 @@ const handleGetProductsStatus = async () => {
     });
   } catch (error) {
     console.log(error);
+  } finally {
+    ui.isLoading = false;
   }
 };
 

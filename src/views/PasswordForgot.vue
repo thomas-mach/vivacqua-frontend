@@ -52,7 +52,9 @@ import { ref } from "vue";
 import { forgotPassword } from "../api/authService.js";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { useUIStore } from "../stores/ui.js";
 
+const ui = useUIStore();
 const toast = useToast();
 const email = ref("");
 let emailInputError = ref("");
@@ -67,6 +69,7 @@ const hendleForgotPasssword = async () => {
     return;
   }
   try {
+    ui.isLoading = true;
     const response = await forgotPassword({
       email: email.value,
     });
@@ -74,6 +77,8 @@ const hendleForgotPasssword = async () => {
     email.value = "";
   } catch (error) {
     errorMessage.value = error.response.data.message;
+  } finally {
+    ui.isLoading = false;
   }
 };
 

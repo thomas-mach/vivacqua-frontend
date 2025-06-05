@@ -49,7 +49,9 @@ import { usePaymentStore } from "../stores/storePayment.js";
 import { getOrder } from "../api/orderService.js";
 import { useCartStore } from "../stores/storeCart";
 import { useRouter } from "vue-router";
+import { useUIStore } from "../stores/ui.js";
 
+const ui = useUIStore();
 const router = useRouter();
 const cart = useCartStore();
 const IMAGES_URL = import.meta.env.VITE_SERVER_URL;
@@ -64,6 +66,7 @@ const order = ref([]);
 const isCardComplete = ref(false);
 
 onMounted(async () => {
+  ui.isLoading = true;
   try {
     // 1. Recupera clientSecret e ordine
     clientSecret.value = payment.clientSecret;
@@ -96,6 +99,8 @@ onMounted(async () => {
   } catch (err) {
     error.value = "Errore durante il caricamento della pagina di checkout.";
     console.error(err);
+  } finally {
+    ui.isLoading = false;
   }
 });
 

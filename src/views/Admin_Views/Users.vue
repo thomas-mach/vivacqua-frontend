@@ -130,6 +130,7 @@ const selectedUser = ref(null);
 const isModalOpen = ref(false);
 
 const handleUpdateUserByAdmin = async (data) => {
+  ui.isLoading = true;
   try {
     console.log(selectedUser);
     const response = await updateUserByAdmin(toRaw(data));
@@ -142,6 +143,8 @@ const handleUpdateUserByAdmin = async (data) => {
     );
 
     console.log(err);
+  } finally {
+    ui.isLoading = false;
   }
 };
 
