@@ -36,23 +36,17 @@
       <button
         class="btn nav-toggle"
         :class="{ 'nav-open': ui.showNav }"
-        @click="ui.toggleNav"
+        @click="ui.toggleNav()"
       >
         <span class="hamburger"></span>
       </button>
-
-      <div
-        v-if="ui.showUserNav"
-        class="user-menu-overlay"
-        @click="ui.toggleNav()"
-      ></div>
 
       <div v-if="ui.showUserNav" class="user-menu">
         <router-link
           v-if="!isLoggedIn"
           class="link"
           to="/signup"
-          @click="ui.showUserNav = false"
+          @click="ui.showUserNav()"
         >
           Registrati
           <font-awesome-icon class="icon" :icon="['fas', 'user-plus']" />
@@ -72,7 +66,7 @@
         <router-link
           v-if="isLoggedIn"
           class="link"
-          to="/signup"
+          to="/"
           @click.prevent="(ui.showUserNav = false), handeleLogout()"
         >
           Logout<font-awesome-icon
@@ -91,9 +85,12 @@ import { useAuthStore } from "../stores/storeAuth.js";
 import { logout } from "../api/authService.js";
 import { useRouter } from "vue-router";
 import { useCartStore } from "../stores/storeCart";
+import { useToast } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 let isDesktop = ref(window.innerWidth > 768);
 let isLoggedIn = ref(false);
+const toast = useToast();
 const cart = useCartStore();
 const user = ref(null);
 const router = useRouter();
@@ -123,6 +120,7 @@ const handeleLogout = async () => {
     Cookies.remove("jwt", { path: "/" });
     authStore.logout();
     cart.clearCart();
+    toast.success("Hai effettuato il logout.", { timeout: 2000 });
     router.push("/");
     console.log(response);
   } catch (error) {
