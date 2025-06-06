@@ -113,8 +113,13 @@ onMounted(() => {
 <style scoped>
 .wrapper {
   height: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.user-wrapper {
+  width: 100%;
 }
 
 .avatar-name-wrapper {
@@ -122,6 +127,12 @@ onMounted(() => {
   align-items: center;
   gap: 1em;
   margin-bottom: 0.5em;
+  max-width: 100%;
+}
+
+.name-email-wrapper {
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .divider {
@@ -170,8 +181,8 @@ onMounted(() => {
 .avatar {
   background-color: var(--color-primary);
   color: var(--color-white);
-  width: 40px;
-  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -182,6 +193,10 @@ onMounted(() => {
 .user-name,
 .user-email {
   color: var(--color-gray-light);
+  word-break: break-word; /* per spezzare parole lunghe */
+  overflow-wrap: break-word; /* supporto esteso */
+  white-space: normal; /* wrappa dopo spazi */
+  max-width: 100%;
 }
 
 .user-email {
