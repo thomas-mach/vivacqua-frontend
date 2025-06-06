@@ -131,10 +131,3 @@ input:-webkit-autofill {
     transform: translateX(0%);
   }
 }
-
-/* .position-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 100000;
-} */

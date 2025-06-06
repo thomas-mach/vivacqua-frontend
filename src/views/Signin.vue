@@ -96,7 +96,9 @@ import { useAuthStore } from "../stores/storeAuth.js";
 import { useToast } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import { useUIStore } from "../stores/ui.js";
+import { useRecaptcha } from "../utils/recaptch.js";
 
+const { execute } = useRecaptcha();
 const ui = useUIStore();
 const toast = useToast();
 const icon = ref(["fas", "lock"]);
@@ -123,10 +125,12 @@ const hendelSignin = async () => {
   emailValidate();
   passwordValidate();
   try {
+    const token = await execute("login");
     ui.isLoading = true;
     const response = await signin({
       email: email.value,
       password: password.value,
+      "g-recaptcha-response": token,
     });
     console.log("response from signin", response);
     const getMeResponse = await getMe();
@@ -152,6 +156,7 @@ const hendelSignin = async () => {
     authStore.login(userData);
     console.log(localStorage.getItem("user"));
   } catch (err) {
+    // toast.error("Errore nella verifica reCAPTCHA, riprova");
     if (err?.response?.data?.error?.code === "ACCOUNT_DISABLED") {
       console.log("error from catch signin", err);
       reactivateAccountLink.value = true;
