@@ -75,6 +75,7 @@ const updateScreenSize = () => {
   top: 0;
   left: 0;
   height: 100%;
+  max-width: 70%;
   background-color: var(--color-accent);
   z-index: 5000;
   padding: 1rem;
@@ -162,13 +163,15 @@ const updateScreenSize = () => {
     background-color: var(--color-accent);
     position: sticky;
     top: 0;
-    height: 100%;
+    height: 100vh;
+    min-width: 250px;
     z-index: 550000;
     align-self: start;
     padding: 1rem;
   }
 
   .static-nav {
+    max-width: 100%;
     position: sticky;
     top: 0;
   }
