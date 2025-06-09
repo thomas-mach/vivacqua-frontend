@@ -2,7 +2,8 @@
   <div class="success">
     <h1>Grazie per il tuo ordine! 🎉</h1>
     <p>Il tuo pagamento è andato a buon fine.</p>
-    <router-link class="link" to="/"> <-- Torna alla Home</router-link>
+    <p>Ti abbiamo inviato un'email di conferma.</p>
+    <router-link class="link" to="/">← Torna alla Home</router-link>
   </div>
 </template>
 
