@@ -103,7 +103,8 @@ p {
 
 .wrapper-cart {
   margin: 0 auto;
-  width: 100%;
+
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
 }
