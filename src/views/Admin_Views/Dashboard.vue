@@ -114,6 +114,7 @@ const handleGetProductsStatus = async () => {
 const handleGetTopFiveProducts = async () => {
   try {
     const response = await getTopFiveProducts();
+    console.log("Top five:", response);
     const topFiveData = response.data.topProducts;
 
     const labels = topFiveData.map((el) => el.name);

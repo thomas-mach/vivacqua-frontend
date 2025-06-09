@@ -46,7 +46,7 @@
           v-if="!isLoggedIn"
           class="link"
           to="/signup"
-          @click="ui.showUserNav()"
+          @click="ui.showUserNav = false"
         >
           Registrati
           <font-awesome-icon class="icon" :icon="['fas', 'user-plus']" />
